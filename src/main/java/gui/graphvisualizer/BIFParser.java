@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class parses an inputstream or a string in XMLBIF ver. 0.3 format, and
@@ -86,12 +87,12 @@ public class BIFParser implements GraphConstants {
 	}
 
 	/**
-	 * This method parses the string or the InputStream that we passed in
-	 * through the constructor and builds up the m_nodes and m_edges vectors
+	 * This method parses the string or the InputStream that we passed in through
+	 * the constructor and builds up the m_nodes and m_edges vectors
 	 * 
 	 * @exception Exception
-	 *                if both the inString and inStream are null, i.e. no input
-	 *                has been provided
+	 *                if both the inString and inStream are null, i.e. no input has
+	 *                been provided
 	 * @exception BIFFormatException
 	 *                if there is format of the input is not correct. The format
 	 *                should conform to XMLBIF version 0.3
@@ -142,15 +143,15 @@ public class BIFParser implements GraphConstants {
 			// getting nodes position
 			templist = ((Element) nl.item(i)).getElementsByTagName("PROPERTY");
 			for (int j = 0; j < templist.getLength(); j++) {
-				if (templist.item(j).getFirstChild().getNodeValue().startsWith("position")) {
+				if (StringUtils.startsWith(templist.item(j).getFirstChild().getNodeValue(), "position")) {
 					String xy = templist.item(j).getFirstChild().getNodeValue();
 					// System.out.println("x: "+
 					// xy.substring(xy.indexOf('(')+1, xy.indexOf(','))+
 					// " y: "+
 					// xy.substring(xy.indexOf(',')+1, xy.indexOf(')'))
 					// );
-					n.x = Integer.parseInt(xy.substring(xy.indexOf('(') + 1, xy.indexOf(',')).trim());
-					n.y = Integer.parseInt(xy.substring(xy.indexOf(',') + 1, xy.indexOf(')')).trim());
+					n.x = Integer.parseInt(StringUtils.trim(xy.substring(xy.indexOf('(') + 1, xy.indexOf(','))));
+					n.y = Integer.parseInt(StringUtils.trim(xy.substring(xy.indexOf(',') + 1, xy.indexOf(')'))));
 					break;
 				}
 			}
@@ -235,12 +236,12 @@ public class BIFParser implements GraphConstants {
 		// it
 		int noOfEdgesOfNode[] = new int[m_nodes.size()];
 		int noOfPrntsOfNode[] = new int[m_nodes.size()];
-		for (GraphEdge e : m_edges) {
+		m_edges.forEach(e -> {
 			noOfEdgesOfNode[e.src]++;
 			noOfPrntsOfNode[e.dest]++;
-		}
+		});
 
-		for (GraphEdge e : m_edges) {
+		m_edges.forEach(e -> {
 			GraphNode n = m_nodes.get(e.src);
 			GraphNode n2 = m_nodes.get(e.dest);
 			if (n.edges == null) {
@@ -268,7 +269,7 @@ public class BIFParser implements GraphConstants {
 				k++;
 			}
 			n2.prnts[k] = e.src;
-		}
+		});
 
 		// processGraph();
 		// setAppropriateSize();
@@ -276,15 +277,14 @@ public class BIFParser implements GraphConstants {
 	} // end readBIF
 
 	/**
-	 * This method writes a graph in XMLBIF ver. 0.3 format to a file. However,
-	 * if is reloaded in GraphVisualizer we would need to layout the graph again
-	 * to display it correctly.
+	 * This method writes a graph in XMLBIF ver. 0.3 format to a file. However, if
+	 * is reloaded in GraphVisualizer we would need to layout the graph again to
+	 * display it correctly.
 	 * 
 	 * @param filename
 	 *            The name of the file to write in. (will overwrite)
 	 * @param graphName
-	 *            The name of the graph. (will be the name of network tag in
-	 *            XMLBIF)
+	 *            The name of the graph. (will be the name of network tag in XMLBIF)
 	 * @param nodes
 	 *            Vector containing all the nodes
 	 * @param edges
@@ -294,7 +294,7 @@ public class BIFParser implements GraphConstants {
 			ArrayList<GraphEdge> edges) {
 		try (FileWriter outfile = new FileWriter(filename);) {
 
-			StringBuffer text = new StringBuffer();
+			StringBuilder text = new StringBuilder();
 
 			text.append("<?xml version=\"1.0\"?>\n");
 			text.append("<!-- DTD for the XMLBIF 0.3 format -->\n");
@@ -389,7 +389,7 @@ public class BIFParser implements GraphConstants {
 	 * @return normalized string
 	 */
 	private static String XMLNormalize(String sStr) {
-		StringBuffer sStr2 = new StringBuffer();
+		StringBuilder sStr2 = new StringBuilder();
 		for (int iStr = 0; iStr < sStr.length(); iStr++) {
 			char c = sStr.charAt(iStr);
 			switch (c) {

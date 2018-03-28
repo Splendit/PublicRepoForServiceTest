@@ -36,6 +36,7 @@ import java.util.Random;
 
 import core.converters.ArffLoader.ArffReader;
 import core.converters.ConverterUtils.DataSource;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class for handling an ordered set of weighted instances.
@@ -115,8 +116,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 	/**
 	 * The lines read so far in case of incremental loading. Since the
-	 * StreamTokenizer will be re-initialized with every instance that is read,
-	 * we have to keep track of the number of lines read so far.
+	 * StreamTokenizer will be re-initialized with every instance that is read, we
+	 * have to keep track of the number of lines read so far.
 	 * 
 	 * @see #readInstance(Reader)
 	 */
@@ -157,8 +158,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 *             if there is a problem with the reader.
 	 * @deprecated instead of using this method in conjunction with the
 	 *             <code>readInstance(Reader)</code> method, one should use the
-	 *             <code>ArffLoader</code> or <code>DataSource</code> class
-	 *             instead.
+	 *             <code>ArffLoader</code> or <code>DataSource</code> class instead.
 	 * @see weka.core.converters.ArffLoader
 	 * @see weka.core.converters.ConverterUtils.DataSource
 	 */
@@ -174,8 +174,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Constructor copying all instances and references to the header
-	 * information from the given set of instances.
+	 * Constructor copying all instances and references to the header information
+	 * from the given set of instances.
 	 * 
 	 * @param dataset
 	 *            the set to be copied
@@ -189,8 +189,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 	/**
 	 * Constructor creating an empty set of instances. Copies references to the
-	 * header information from the given set of instances. Sets the capacity of
-	 * the set of instances to 0 if its negative.
+	 * header information from the given set of instances. Sets the capacity of the
+	 * set of instances to 0 if its negative.
 	 * 
 	 * @param dataset
 	 *            the instances from which the header information is to be taken
@@ -227,10 +227,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates an empty set of instances. Uses the given attribute information.
-	 * Sets the capacity of the set of instances to 0 if its negative. Given
-	 * attribute information must not be changed after this constructor has been
-	 * used.
+	 * Creates an empty set of instances. Uses the given attribute information. Sets
+	 * the capacity of the set of instances to 0 if its negative. Given attribute
+	 * information must not be changed after this constructor has been used.
 	 * 
 	 * @param name
 	 *            the name of the relation
@@ -245,18 +244,18 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 		// check whether the attribute names are unique
 		HashSet<String> names = new HashSet<>();
-		StringBuffer nonUniqueNames = new StringBuffer();
-		for (Attribute att : attInfo) {
+		StringBuilder nonUniqueNames = new StringBuilder();
+		attInfo.forEach(att -> {
 			if (names.contains(att.name())) {
 				nonUniqueNames.append("'" + att.name() + "' ");
 			}
 			names.add(att.name());
-		}
+		});
 		if (names.size() != attInfo.size()) {
 			throw new IllegalArgumentException(
 					"Attribute names are not unique!" + " Causes: " + nonUniqueNames.toString());
 		}
-		names.removeAll(names);
+		names.clear();
 
 		m_RelationName = name;
 		m_ClassIndex = -1;
@@ -294,9 +293,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 	/**
 	 * Create a copy of the structure. If the data has string or relational
-	 * attributes, theses are replaced by empty copies. Other attributes are
-	 * left unmodified, but the underlying list structure holding references to
-	 * the attributes is shallow-copied, so that other Instances objects with a
+	 * attributes, theses are replaced by empty copies. Other attributes are left
+	 * unmodified, but the underlying list structure holding references to the
+	 * attributes is shallow-copied, so that other Instances objects with a
 	 * reference to this list are not affected.
 	 * 
 	 * @return a copy of the instance structure.
@@ -304,30 +303,28 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	public Instances stringFreeStructure() {
 
 		ArrayList<Attribute> newAtts = new ArrayList<>();
-		for (Attribute att : m_Attributes) {
+		m_Attributes.forEach(att -> {
 			if (att.type() == Attribute.STRING) {
 				newAtts.add(new Attribute(att.name(), (List<String>) null, att.index()));
 			} else if (att.type() == Attribute.RELATIONAL) {
 				newAtts.add(new Attribute(att.name(), new Instances(att.relation(), 0), att.index()));
 			}
-		}
+		});
 		if (newAtts.size() == 0) {
 			return new Instances(this, 0);
 		}
 		ArrayList<Attribute> atts = Utils.cast(m_Attributes.clone());
-		for (Attribute att : newAtts) {
-			atts.set(att.index(), att);
-		}
+		newAtts.forEach(att -> atts.set(att.index(), att));
 		Instances result = new Instances(this, 0);
 		result.m_Attributes = atts;
 		return result;
 	}
 
 	/**
-	 * Adds one instance to the end of the set. Shallow copies instance before
-	 * it is added. Increases the size of the dataset if it is not large enough.
-	 * Does not check if the instance is compatible with the dataset. Note:
-	 * String or relational values are not transferred.
+	 * Adds one instance to the end of the set. Shallow copies instance before it is
+	 * added. Increases the size of the dataset if it is not large enough. Does not
+	 * check if the instance is compatible with the dataset. Note: String or
+	 * relational values are not transferred.
 	 * 
 	 * @param instance
 	 *            the instance to be added
@@ -344,10 +341,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Adds one instance at the given position in the list. Shallow copies
-	 * instance before it is added. Increases the size of the dataset if it is
-	 * not large enough. Does not check if the instance is compatible with the
-	 * dataset. Note: String or relational values are not transferred.
+	 * Adds one instance at the given position in the list. Shallow copies instance
+	 * before it is added. Increases the size of the dataset if it is not large
+	 * enough. Does not check if the instance is compatible with the dataset. Note:
+	 * String or relational values are not transferred.
 	 * 
 	 * @param index
 	 *            position where instance is to be inserted
@@ -381,9 +378,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns an attribute given its name. If there is more than one attribute
-	 * with the same name, it returns the first one. Returns null if the
-	 * attribute can't be found.
+	 * Returns an attribute given its name. If there is more than one attribute with
+	 * the same name, it returns the first one. Returns null if the attribute can't
+	 * be found.
 	 * 
 	 * @param name
 	 *            the attribute's name
@@ -429,9 +426,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Checks if the given instance is compatible with this dataset. Only looks
-	 * at the size of the instance and the ranges of the values for nominal and
-	 * string attributes.
+	 * Checks if the given instance is compatible with this dataset. Only looks at
+	 * the size of the instance and the ranges of the values for nominal and string
+	 * attributes.
 	 * 
 	 * @param instance
 	 *            the instance to check
@@ -485,8 +482,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Compactifies the set of instances. Decreases the capacity of the set so
-	 * that it matches the number of instances in the set.
+	 * Compactifies the set of instances. Decreases the capacity of the set so that
+	 * it matches the number of instances in the set.
 	 */
 	public void compactify() {
 
@@ -515,9 +512,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 	/**
 	 * Deletes an attribute at the given position (0 to numAttributes() - 1).
-	 * Attribute objects after the deletion point are copied so that their
-	 * indices can be decremented. Creates a fresh list to hold the old and new
-	 * attribute objects.
+	 * Attribute objects after the deletion point are copied so that their indices
+	 * can be decremented. Creates a fresh list to hold the old and new attribute
+	 * objects.
 	 * 
 	 * @param position
 	 *            the attribute's position (position starts with 0)
@@ -563,14 +560,14 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Deletes all attributes of the given type in the dataset. A deep copy of
-	 * the attribute information is performed before an attribute is deleted.
+	 * Deletes all attributes of the given type in the dataset. A deep copy of the
+	 * attribute information is performed before an attribute is deleted.
 	 * 
 	 * @param attType
 	 *            the attribute type to delete
 	 * @throws IllegalArgumentException
-	 *             if attribute couldn't be successfully deleted (probably
-	 *             because it is the class attribute).
+	 *             if attribute couldn't be successfully deleted (probably because
+	 *             it is the class attribute).
 	 */
 	public void deleteAttributeType(int attType) {
 		int i = 0;
@@ -584,12 +581,12 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Deletes all string attributes in the dataset. A deep copy of the
-	 * attribute information is performed before an attribute is deleted.
+	 * Deletes all string attributes in the dataset. A deep copy of the attribute
+	 * information is performed before an attribute is deleted.
 	 * 
 	 * @throws IllegalArgumentException
-	 *             if string attribute couldn't be successfully deleted
-	 *             (probably because it is the class attribute).
+	 *             if string attribute couldn't be successfully deleted (probably
+	 *             because it is the class attribute).
 	 * @see #deleteAttributeType(int)
 	 */
 	public void deleteStringAttributes() {
@@ -597,8 +594,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Removes all instances with missing values for a particular attribute from
-	 * the dataset.
+	 * Removes all instances with missing values for a particular attribute from the
+	 * dataset.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index (index starts with 0)
@@ -617,8 +614,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Removes all instances with missing values for a particular attribute from
-	 * the dataset.
+	 * Removes all instances with missing values for a particular attribute from the
+	 * dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -643,8 +640,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns an enumeration of all the attributes. The class attribute (if
-	 * set) is skipped by this enumeration.
+	 * Returns an enumeration of all the attributes. The class attribute (if set) is
+	 * skipped by this enumeration.
 	 * 
 	 * @return enumeration of all the attributes.
 	 */
@@ -664,13 +661,13 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Checks if two headers are equivalent. If not, then returns a message why
-	 * they differ.
+	 * Checks if two headers are equivalent. If not, then returns a message why they
+	 * differ.
 	 * 
 	 * @param dataset
 	 *            another dataset
-	 * @return null if the header of the given dataset is equivalent to this
-	 *         header, otherwise a message with details on why they differ
+	 * @return null if the header of the given dataset is equivalent to this header,
+	 *         otherwise a message with details on why they differ
 	 */
 	public String equalHeadersMsg(Instances dataset) {
 		// Check class and all attributes
@@ -697,8 +694,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 * 
 	 * @param dataset
 	 *            another dataset
-	 * @return true if the header of the given dataset is equivalent to this
-	 *         header
+	 * @return true if the header of the given dataset is equivalent to this header
 	 */
 	public/* @pure@ */boolean equalHeaders(Instances dataset) {
 		return (equalHeadersMsg(dataset) == null);
@@ -732,11 +728,11 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Inserts an attribute at the given position (0 to numAttributes()) and
-	 * sets all values to be missing. Shallow copies the attribute before it is
-	 * inserted. Existing attribute objects at and after the insertion point are
-	 * also copied so that their indices can be incremented. Creates a fresh
-	 * list to hold the old and new attribute objects.
+	 * Inserts an attribute at the given position (0 to numAttributes()) and sets
+	 * all values to be missing. Shallow copies the attribute before it is inserted.
+	 * Existing attribute objects at and after the insertion point are also copied
+	 * so that their indices can be incremented. Creates a fresh list to hold the
+	 * old and new attribute objects.
 	 * 
 	 * @param att
 	 *            the attribute to be inserted
@@ -831,9 +827,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns the kth-smallest attribute value of a numeric attribute. NOTE
-	 * CHANGE: Missing values (NaN values) are now treated as Double.MAX_VALUE.
-	 * Also, the order of the instances in the data is no longer affected.
+	 * Returns the kth-smallest attribute value of a numeric attribute. NOTE CHANGE:
+	 * Missing values (NaN values) are now treated as Double.MAX_VALUE. Also, the
+	 * order of the instances in the data is no longer affected.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index
@@ -875,9 +871,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns the mean (mode) for a numeric (nominal) attribute as a
-	 * floating-point value. Returns 0 if the attribute is neither nominal nor
-	 * numeric. If all values are missing it returns zero.
+	 * Returns the mean (mode) for a numeric (nominal) attribute as a floating-point
+	 * value. Returns 0 if the attribute is neither nominal nor numeric. If all
+	 * values are missing it returns zero.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index (index starts with 0)
@@ -916,9 +912,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns the mean (mode) for a numeric (nominal) attribute as a
-	 * floating-point value. Returns 0 if the attribute is neither nominal nor
-	 * numeric. If all values are missing it returns zero.
+	 * Returns the mean (mode) for a numeric (nominal) attribute as a floating-point
+	 * value. Returns 0 if the attribute is neither nominal nor numeric. If all
+	 * values are missing it returns zero.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -943,8 +939,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	/**
 	 * Returns the number of class labels.
 	 * 
-	 * @return the number of class labels as an integer if the class attribute
-	 *         is nominal, 1 otherwise.
+	 * @return the number of class labels as an integer if the class attribute is
+	 *         nominal, 1 otherwise.
 	 * @throws UnassignedClassException
 	 *             if the class is not set
 	 */
@@ -974,12 +970,11 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	public/* @pure@ */int numDistinctValues(int attIndex) {
 
 		HashSet<Double> set = new HashSet<>(2 * numInstances());
-		for (Instance current : this) {
-			double key = current.value(attIndex);
+		this.stream().mapToDouble(current -> current.value(attIndex)).forEach(key -> {
 			if (!Utils.isMissingValue(key)) {
 				set.add(key);
 			}
-		}
+		});
 		return set.size();
 	}
 
@@ -1035,8 +1030,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	/**
 	 * Reads a single instance from the reader and appends it to the dataset.
 	 * Automatically expands the dataset if it is not large enough to hold the
-	 * instance. This method does not check for carriage return at the end of
-	 * the line.
+	 * instance. This method does not check for carriage return at the end of the
+	 * line.
 	 * 
 	 * @param reader
 	 *            the reader
@@ -1045,8 +1040,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 *             if the information is not read successfully
 	 * @deprecated instead of using this method in conjunction with the
 	 *             <code>readInstance(Reader)</code> method, one should use the
-	 *             <code>ArffLoader</code> or <code>DataSource</code> class
-	 *             instead.
+	 *             <code>ArffLoader</code> or <code>DataSource</code> class instead.
 	 * @see weka.core.converters.ArffLoader
 	 * @see weka.core.converters.ConverterUtils.DataSource
 	 */
@@ -1065,10 +1059,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Replaces the attribute at the given position (0 to numAttributes()) with
-	 * the given attribute and sets all its values to be missing. Shallow copies
-	 * the given attribute before it is inserted. Creates a fresh list to hold
-	 * the old and new attribute objects.
+	 * Replaces the attribute at the given position (0 to numAttributes()) with the
+	 * given attribute and sets all its values to be missing. Shallow copies the
+	 * given attribute before it is inserted. Creates a fresh list to hold the old
+	 * and new attribute objects.
 	 * 
 	 * @param att
 	 *            the attribute to be inserted
@@ -1086,7 +1080,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 		}
 
 		// Does the new attribute have a different name?
-		if (!(att.name() == m_Attributes.get(position).name())) {
+		if (!(att.name().equals(m_Attributes.get(position).name()))) {
 
 			// Need to check if attribute name already exists
 			Attribute candidate = attribute(att.name());
@@ -1171,7 +1165,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 		Attribute newAtt = attribute(att).copy(name);
 		ArrayList<Attribute> newVec = new ArrayList<>(numAttributes());
 		HashMap<String, Integer> newMap = new HashMap<>((int) (numAttributes() / 0.75));
-		for (Attribute attr : m_Attributes) {
+		m_Attributes.forEach(attr -> {
 			if (attr.index() == att) {
 				newVec.add(newAtt);
 				newMap.put(name, att);
@@ -1179,7 +1173,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				newVec.add(attr);
 				newMap.put(attr.name(), attr.index());
 			}
-		}
+		});
 		m_Attributes = newVec;
 		m_NamesToAttributeIndices = newMap;
 	}
@@ -1198,8 +1192,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Renames the value of a nominal (or string) attribute value. This change
-	 * only affects this dataset.
+	 * Renames the value of a nominal (or string) attribute value. This change only
+	 * affects this dataset.
 	 * 
 	 * @param att
 	 *            the attribute's index (index starts with 0)
@@ -1214,19 +1208,19 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 		ArrayList<Attribute> newVec = new ArrayList<>(numAttributes());
 
 		newAtt.setValue(val, name);
-		for (Attribute attr : m_Attributes) {
+		m_Attributes.forEach(attr -> {
 			if (attr.index() == att) {
 				newVec.add(newAtt);
 			} else {
 				newVec.add(attr);
 			}
-		}
+		});
 		m_Attributes = newVec;
 	}
 
 	/**
-	 * Renames the value of a nominal (or string) attribute value. This change
-	 * only affects this dataset.
+	 * Renames the value of a nominal (or string) attribute value. This change only
+	 * affects this dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -1262,10 +1256,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the current instance weights. The weights of the
-	 * instances in the new dataset are set to one. See also
-	 * resampleWithWeights(Random, double[], boolean[]).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the current instance weights. The weights of the instances in
+	 * the new dataset are set to one. See also resampleWithWeights(Random,
+	 * double[], boolean[]).
 	 * 
 	 * @param random
 	 *            a random number generator
@@ -1277,10 +1271,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the current instance weights. The weights of the
-	 * instances in the new dataset are set to one. See also
-	 * resampleWithWeights(Random, double[], boolean[]).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the current instance weights. The weights of the instances in
+	 * the new dataset are set to one. See also resampleWithWeights(Random,
+	 * double[], boolean[]).
 	 * 
 	 * @param random
 	 *            a random number generator
@@ -1294,16 +1288,15 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the current instance weights. The weights of the
-	 * instances in the new dataset are set to one. See also
-	 * resampleWithWeights(Random, double[], boolean[]).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the current instance weights. The weights of the instances in
+	 * the new dataset are set to one. See also resampleWithWeights(Random,
+	 * double[], boolean[]).
 	 * 
 	 * @param random
 	 *            a random number generator
 	 * @param representUsingWeights
-	 *            if true, copies are represented using weights in resampled
-	 *            data
+	 *            if true, copies are represented using weights in resampled data
 	 * @return the new dataset
 	 */
 	public Instances resampleWithWeights(Random random, boolean representUsingWeights) {
@@ -1312,18 +1305,17 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the current instance weights. The weights of the
-	 * instances in the new dataset are set to one. See also
-	 * resampleWithWeights(Random, double[], boolean[]).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the current instance weights. The weights of the instances in
+	 * the new dataset are set to one. See also resampleWithWeights(Random,
+	 * double[], boolean[]).
 	 * 
 	 * @param random
 	 *            a random number generator
 	 * @param sampled
 	 *            an array indicating what has been sampled
 	 * @param representUsingWeights
-	 *            if true, copies are represented using weights in resampled
-	 *            data
+	 *            if true, copies are represented using weights in resampled data
 	 * @return the new dataset
 	 */
 	public Instances resampleWithWeights(Random random, boolean[] sampled, boolean representUsingWeights) {
@@ -1336,9 +1328,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the given weight vector. See also
-	 * resampleWithWeights(Random, double[], boolean[]).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the given weight vector. See also resampleWithWeights(Random,
+	 * double[], boolean[]).
 	 * 
 	 * @param random
 	 *            a random number generator
@@ -1346,8 +1338,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 *            the weight vector
 	 * @return the new dataset
 	 * @throws IllegalArgumentException
-	 *             if the weights array is of the wrong length or contains
-	 *             negative weights.
+	 *             if the weights array is of the wrong length or contains negative
+	 *             weights.
 	 */
 	public Instances resampleWithWeights(Random random, double[] weights) {
 
@@ -1355,12 +1347,12 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the given weight vector. The weights of the
-	 * instances in the new dataset are set to one. The length of the weight
-	 * vector has to be the same as the number of instances in the dataset, and
-	 * all weights have to be positive. Uses Walker's method, see pp. 232 of
-	 * "Stochastic Simulation" by B.D. Ripley (1987).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the given weight vector. The weights of the instances in the new
+	 * dataset are set to one. The length of the weight vector has to be the same as
+	 * the number of instances in the dataset, and all weights have to be positive.
+	 * Uses Walker's method, see pp. 232 of "Stochastic Simulation" by B.D. Ripley
+	 * (1987).
 	 * 
 	 * @param random
 	 *            a random number generator
@@ -1370,8 +1362,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 *            an array indicating what has been sampled, can be null
 	 * @return the new dataset
 	 * @throws IllegalArgumentException
-	 *             if the weights array is of the wrong length or contains
-	 *             negative weights.
+	 *             if the weights array is of the wrong length or contains negative
+	 *             weights.
 	 */
 	public Instances resampleWithWeights(Random random, double[] weights, boolean[] sampled) {
 
@@ -1379,12 +1371,12 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates a new dataset of the same size using random sampling with
-	 * replacement according to the given weight vector. The weights of the
-	 * instances in the new dataset are set to one. The length of the weight
-	 * vector has to be the same as the number of instances in the dataset, and
-	 * all weights have to be positive. Uses Walker's method, see pp. 232 of
-	 * "Stochastic Simulation" by B.D. Ripley (1987).
+	 * Creates a new dataset of the same size using random sampling with replacement
+	 * according to the given weight vector. The weights of the instances in the new
+	 * dataset are set to one. The length of the weight vector has to be the same as
+	 * the number of instances in the dataset, and all weights have to be positive.
+	 * Uses Walker's method, see pp. 232 of "Stochastic Simulation" by B.D. Ripley
+	 * (1987).
 	 * 
 	 * @param random
 	 *            a random number generator
@@ -1393,12 +1385,11 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 * @param sampled
 	 *            an array indicating what has been sampled, can be null
 	 * @param representUsingWeights
-	 *            if true, copies are represented using weights in resampled
-	 *            data
+	 *            if true, copies are represented using weights in resampled data
 	 * @return the new dataset
 	 * @throws IllegalArgumentException
-	 *             if the weights array is of the wrong length or contains
-	 *             negative weights.
+	 *             if the weights array is of the wrong length or contains negative
+	 *             weights.
 	 */
 	public Instances resampleWithWeights(Random random, double[] weights, boolean[] sampled,
 			boolean representUsingWeights) {
@@ -1497,9 +1488,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Replaces the instance at the given position. Shallow copies instance
-	 * before it is added. Does not check if the instance is compatible with the
-	 * dataset. Note: String or relational values are not transferred.
+	 * Replaces the instance at the given position. Shallow copies instance before
+	 * it is added. Does not check if the instance is compatible with the dataset.
+	 * Note: String or relational values are not transferred.
 	 * 
 	 * @param index
 	 *            position where instance is to be inserted
@@ -1561,8 +1552,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Sorts a nominal attribute (stable, linear-time sort). Instances are
-	 * sorted based on the attribute label ordering specified in the header.
+	 * Sorts a nominal attribute (stable, linear-time sort). Instances are sorted
+	 * based on the attribute label ordering specified in the header.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index (index starts with 0)
@@ -1598,11 +1589,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Sorts the instances based on an attribute. For numeric attributes,
-	 * instances are sorted in ascending order. For nominal attributes,
-	 * instances are sorted based on the attribute label ordering specified in
-	 * the header. Instances with missing values for the attribute are placed at
-	 * the end of the dataset.
+	 * Sorts the instances based on an attribute. For numeric attributes, instances
+	 * are sorted in ascending order. For nominal attributes, instances are sorted
+	 * based on the attribute label ordering specified in the header. Instances with
+	 * missing values for the attribute are placed at the end of the dataset.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index (index starts with 0)
@@ -1635,11 +1625,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Sorts the instances based on an attribute. For numeric attributes,
-	 * instances are sorted into ascending order. For nominal attributes,
-	 * instances are sorted based on the attribute label ordering specified in
-	 * the header. Instances with missing values for the attribute are placed at
-	 * the end of the dataset.
+	 * Sorts the instances based on an attribute. For numeric attributes, instances
+	 * are sorted into ascending order. For nominal attributes, instances are sorted
+	 * based on the attribute label ordering specified in the header. Instances with
+	 * missing values for the attribute are placed at the end of the dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -1650,11 +1639,11 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Sorts the instances based on an attribute, using a stable sort. For
-	 * numeric attributes, instances are sorted in ascending order. For nominal
-	 * attributes, instances are sorted based on the attribute label ordering
-	 * specified in the header. Instances with missing values for the attribute
-	 * are placed at the end of the dataset.
+	 * Sorts the instances based on an attribute, using a stable sort. For numeric
+	 * attributes, instances are sorted in ascending order. For nominal attributes,
+	 * instances are sorted based on the attribute label ordering specified in the
+	 * header. Instances with missing values for the attribute are placed at the end
+	 * of the dataset.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index (index starts with 0)
@@ -1682,11 +1671,11 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Sorts the instances based on an attribute, using a stable sort. For
-	 * numeric attributes, instances are sorted into ascending order. For
-	 * nominal attributes, instances are sorted based on the attribute label
-	 * ordering specified in the header. Instances with missing values for the
-	 * attribute are placed at the end of the dataset.
+	 * Sorts the instances based on an attribute, using a stable sort. For numeric
+	 * attributes, instances are sorted into ascending order. For nominal
+	 * attributes, instances are sorted based on the attribute label ordering
+	 * specified in the header. Instances with missing values for the attribute are
+	 * placed at the end of the dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -1698,8 +1687,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 	/**
 	 * Stratifies a set of instances according to its class values if the class
-	 * attribute is nominal (so that afterwards a stratified cross-validation
-	 * can be performed).
+	 * attribute is nominal (so that afterwards a stratified cross-validation can be
+	 * performed).
 	 * 
 	 * @param numFolds
 	 *            the number of folds in the cross-validation
@@ -1753,14 +1742,14 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 * Creates the test set for one fold of a cross-validation on the dataset.
 	 * 
 	 * @param numFolds
-	 *            the number of folds in the cross-validation. Must be greater
-	 *            than 1.
+	 *            the number of folds in the cross-validation. Must be greater than
+	 *            1.
 	 * @param numFold
 	 *            0 for the first fold, 1 for the second, ...
 	 * @return the test set as a set of weighted instances
 	 * @throws IllegalArgumentException
-	 *             if the number of folds is less than 2 or greater than the
-	 *             number of instances.
+	 *             if the number of folds is less than 2 or greater than the number
+	 *             of instances.
 	 */
 	// @ requires 2 <= numFolds && numFolds < numInstances();
 	// @ requires 0 <= numFold && numFold < numFolds;
@@ -1791,15 +1780,15 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns the dataset as a string in ARFF format. Strings are quoted if
-	 * they contain whitespace characters, or if they are a question mark.
+	 * Returns the dataset as a string in ARFF format. Strings are quoted if they
+	 * contain whitespace characters, or if they are a question mark.
 	 * 
 	 * @return the dataset in ARFF format as a string
 	 */
 	@Override
 	public String toString() {
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		text.append(ARFF_RELATION).append(" ").append(Utils.quote(m_RelationName)).append("\n\n");
 		for (int i = 0; i < numAttributes(); i++) {
@@ -1812,15 +1801,14 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns the instances in the dataset as a string in ARFF format. Strings
-	 * are quoted if they contain whitespace characters, or if they are a
-	 * question mark.
+	 * Returns the instances in the dataset as a string in ARFF format. Strings are
+	 * quoted if they contain whitespace characters, or if they are a question mark.
 	 * 
 	 * @return the dataset in ARFF format as a string
 	 */
 	protected String stringWithoutHeader() {
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		for (int i = 0; i < numInstances(); i++) {
 			text.append(instance(i));
@@ -1832,18 +1820,17 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates the training set for one fold of a cross-validation on the
-	 * dataset.
+	 * Creates the training set for one fold of a cross-validation on the dataset.
 	 * 
 	 * @param numFolds
-	 *            the number of folds in the cross-validation. Must be greater
-	 *            than 1.
+	 *            the number of folds in the cross-validation. Must be greater than
+	 *            1.
 	 * @param numFold
 	 *            0 for the first fold, 1 for the second, ...
 	 * @return the training set
 	 * @throws IllegalArgumentException
-	 *             if the number of folds is less than 2 or greater than the
-	 *             number of instances.
+	 *             if the number of folds is less than 2 or greater than the number
+	 *             of instances.
 	 */
 	// @ requires 2 <= numFolds && numFolds < numInstances();
 	// @ requires 0 <= numFold && numFold < numFolds;
@@ -1876,21 +1863,21 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Creates the training set for one fold of a cross-validation on the
-	 * dataset. The data is subsequently randomized based on the given random
-	 * number generator.
+	 * Creates the training set for one fold of a cross-validation on the dataset.
+	 * The data is subsequently randomized based on the given random number
+	 * generator.
 	 * 
 	 * @param numFolds
-	 *            the number of folds in the cross-validation. Must be greater
-	 *            than 1.
+	 *            the number of folds in the cross-validation. Must be greater than
+	 *            1.
 	 * @param numFold
 	 *            0 for the first fold, 1 for the second, ...
 	 * @param random
 	 *            the random number generator
 	 * @return the training set
 	 * @throws IllegalArgumentException
-	 *             if the number of folds is less than 2 or greater than the
-	 *             number of instances.
+	 *             if the number of folds is less than 2 or greater than the number
+	 *             of instances.
 	 */
 	// @ requires 2 <= numFolds && numFolds < numInstances();
 	// @ requires 0 <= numFold && numFold < numFolds;
@@ -1903,9 +1890,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 	/**
 	 * Computes the variance for all numeric attributes simultaneously. This is
-	 * faster than calling variance() for each attribute. The resulting array
-	 * has as many dimensions as there are attributes. Array elements
-	 * corresponding to non-numeric attributes are set to 0.
+	 * faster than calling variance() for each attribute. The resulting array has as
+	 * many dimensions as there are attributes. Array elements corresponding to
+	 * non-numeric attributes are set to 0.
 	 * 
 	 * @return the array containing the variance values
 	 */
@@ -2051,7 +2038,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 		result.totalCount = numInstances();
 
 		HashMap<Double, double[]> map = new HashMap<>(2 * result.totalCount);
-		for (Instance current : this) {
+		this.forEach(current -> {
 			double key = current.value(index);
 			if (Utils.isMissingValue(key)) {
 				result.missingCount++;
@@ -2067,18 +2054,17 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 					values[1] += current.weight();
 				}
 			}
-		}
+		});
 
-		for (Entry<Double, double[]> entry : map.entrySet()) {
-			result.addDistinct(entry.getKey(), (int) entry.getValue()[0], entry.getValue()[1]);
-		}
+		map.entrySet()
+				.forEach(entry -> result.addDistinct(entry.getKey(), (int) entry.getValue()[0], entry.getValue()[1]));
 		return result;
 	}
 
 	/**
-	 * Gets the value of all instances in this dataset for a particular
-	 * attribute. Useful in conjunction with Utils.sort to allow iterating
-	 * through the dataset in sorted order for some attribute.
+	 * Gets the value of all instances in this dataset for a particular attribute.
+	 * Useful in conjunction with Utils.sort to allow iterating through the dataset
+	 * in sorted order for some attribute.
 	 * 
 	 * @param index
 	 *            the index of the attribute.
@@ -2096,15 +2082,15 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Generates a string summarizing the set of instances. Gives a breakdown
-	 * for each attribute indicating the number of missing/discrete/unique
-	 * values and other information.
+	 * Generates a string summarizing the set of instances. Gives a breakdown for
+	 * each attribute indicating the number of missing/discrete/unique values and
+	 * other information.
 	 * 
 	 * @return a string summarizing the dataset
 	 */
 	public String toSummaryString() {
 
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 		result.append("Relation Name:  ").append(relationName()).append('\n');
 		result.append("Num Instances:  ").append(numInstances()).append('\n');
 		result.append("Num Attributes: ").append(numAttributes()).append('\n');
@@ -2123,66 +2109,66 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 		for (int i = 0; i < numAttributes(); i++) {
 			Attribute a = attribute(i);
 			AttributeStats as = attributeStats(i);
-			result.append(Utils.padLeft(new Integer(i + 1).toString(), numDigits)).append(' ');
+			result.append(Utils.padLeft(Integer.toString(i + 1), numDigits)).append(' ');
 			result.append(Utils.padRight(a.name(), 25)).append(' ');
 			long percent;
 			switch (a.type()) {
 			case Attribute.NOMINAL:
 				result.append(Utils.padLeft("Nom", 4)).append(' ');
 				percent = Math.round(100.0 * as.intCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-				result.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+				result.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 				percent = Math.round(100.0 * as.realCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				break;
 			case Attribute.NUMERIC:
 				result.append(Utils.padLeft("Num", 4)).append(' ');
-				result.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 				percent = Math.round(100.0 * as.intCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				percent = Math.round(100.0 * as.realCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				break;
 			case Attribute.DATE:
 				result.append(Utils.padLeft("Dat", 4)).append(' ');
-				result.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 				percent = Math.round(100.0 * as.intCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				percent = Math.round(100.0 * as.realCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				break;
 			case Attribute.STRING:
 				result.append(Utils.padLeft("Str", 4)).append(' ');
 				percent = Math.round(100.0 * as.intCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-				result.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+				result.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 				percent = Math.round(100.0 * as.realCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				break;
 			case Attribute.RELATIONAL:
 				result.append(Utils.padLeft("Rel", 4)).append(' ');
 				percent = Math.round(100.0 * as.intCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-				result.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+				result.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 				percent = Math.round(100.0 * as.realCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				break;
 			default:
 				result.append(Utils.padLeft("???", 4)).append(' ');
-				result.append(Utils.padLeft(new Integer(0).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Integer.toString(0), 3)).append("% ");
 				percent = Math.round(100.0 * as.intCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				percent = Math.round(100.0 * as.realCount / as.totalCount);
-				result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
+				result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
 				break;
 			}
-			result.append(Utils.padLeft(new Integer(as.missingCount).toString(), 5)).append(" /");
+			result.append(Utils.padLeft(Integer.toString(as.missingCount), 5)).append(" /");
 			percent = Math.round(100.0 * as.missingCount / as.totalCount);
-			result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-			result.append(Utils.padLeft(new Integer(as.uniqueCount).toString(), 5)).append(" /");
+			result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+			result.append(Utils.padLeft(Integer.toString(as.uniqueCount), 5)).append(" /");
 			percent = Math.round(100.0 * as.uniqueCount / as.totalCount);
-			result.append(Utils.padLeft(new Long(percent).toString(), 3)).append("% ");
-			result.append(Utils.padLeft(new Integer(as.distinctCount).toString(), 5)).append(' ');
+			result.append(Utils.padLeft(Long.toString(percent), 3)).append("% ");
+			result.append(Utils.padLeft(Integer.toString(as.distinctCount), 5)).append(' ');
 			result.append('\n');
 		}
 		return result.toString();
@@ -2208,14 +2194,14 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Returns string including all instances, their weights and their indices
-	 * in the original dataset.
+	 * Returns string including all instances, their weights and their indices in
+	 * the original dataset.
 	 * 
 	 * @return description of instance and its weight as a string
 	 */
 	protected/* @pure@ */String instancesAndWeights() {
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		for (int i = 0; i < numInstances(); i++) {
 			text.append(instance(i) + " " + instance(i).weight());
@@ -2268,9 +2254,9 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	}
 
 	/**
-	 * Merges two sets of Instances together. The resulting set will have all
-	 * the attributes of the first set plus all the attributes of the second
-	 * set. The number of instances in both sets must be the same.
+	 * Merges two sets of Instances together. The resulting set will have all the
+	 * attributes of the first set plus all the attributes of the second set. The
+	 * number of instances in both sets must be the same.
 	 * 
 	 * @param first
 	 *            the first set of Instances
@@ -2288,13 +2274,10 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 
 		// Create the vector of merged attributes
 		ArrayList<Attribute> newAttributes = new ArrayList<>(first.numAttributes() + second.numAttributes());
-		for (Attribute att : first.m_Attributes) {
-			newAttributes.add(att);
-		}
-		for (Attribute att : second.m_Attributes) {
-			newAttributes.add((Attribute) att.copy()); // Need to copy because
-														// indices will change.
-		}
+		first.m_Attributes.forEach(newAttributes::add);
+		// Need to copy because
+		// indices will change.
+		second.m_Attributes.forEach(att -> newAttributes.add((Attribute) att.copy()));
 
 		// Create the set of Instances
 		Instances merged = new Instances(first.relationName() + '_' + second.relationName(), newAttributes,
@@ -2530,8 +2513,8 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 	 * prints a summary of a set of instances.</li>
 	 * <li><code>weka.core.Instances</code> merge &lt;filename1&gt;
 	 * &lt;filename2&gt;<br/>
-	 * merges the two datasets (must have same number of instances) and outputs
-	 * the results on stdout.</li>
+	 * merges the two datasets (must have same number of instances) and outputs the
+	 * results on stdout.</li>
 	 * <li><code>weka.core.Instances</code> append &lt;filename1&gt;
 	 * &lt;filename2&gt; <br/>
 	 * appends the second dataset to the first one (must have same headers) and
@@ -2560,20 +2543,20 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				System.out.println(i.toSummaryString());
 			}
 			// read file and print statistics
-			else if ((args.length == 1) && (!("-h" == args[0])) && (!("help" == args[0]))) {
+			else if ((args.length == 1) && (!("-h".equals(args[0]))) && (!("help".equals(args[0])))) {
 				DataSource source = new DataSource(args[0]);
 				i = source.getDataSet();
 				System.out.println(i.toSummaryString());
 			}
 			// read two files, merge them and print result to stdout
-			else if ((args.length == 3) && ("merge" == args[0].toLowerCase())) {
+			else if ((args.length == 3) && ("merge".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				i = Instances.mergeInstances(source1.getDataSet(), source2.getDataSet());
 				System.out.println(i);
 			}
 			// read two files, append them and print result to stdout
-			else if ((args.length == 3) && ("append" == args[0].toLowerCase())) {
+			else if ((args.length == 3) && ("append".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				String msg = source1.getStructure().equalHeadersMsg(source2.getStructure());
@@ -2591,7 +2574,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 				}
 			}
 			// read two files and compare their headers
-			else if ((args.length == 3) && ("headers" == args[0].toLowerCase())) {
+			else if ((args.length == 3) && ("headers".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source1 = new DataSource(args[1]);
 				DataSource source2 = new DataSource(args[2]);
 				String msg = source1.getStructure().equalHeadersMsg(source2.getStructure());
@@ -2603,7 +2586,7 @@ public class Instances extends AbstractList<Instance> implements Serializable, R
 			}
 			// read file and seed value, randomize data and print result to
 			// stdout
-			else if ((args.length == 3) && ("randomize" == args[0].toLowerCase())) {
+			else if ((args.length == 3) && ("randomize".equals(StringUtils.lowerCase(args[0])))) {
 				DataSource source = new DataSource(args[2]);
 				i = source.getDataSet();
 				i.randomize(new Random(Integer.parseInt(args[1])));

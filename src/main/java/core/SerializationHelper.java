@@ -53,9 +53,8 @@ public class SerializationHelper implements RevisionHandler {
 	 * 
 	 * @param classname
 	 *            the class to check
-	 * @return true if the class or one of its ancestors implements the
-	 *         Serializable interface, otherwise false (also if the class cannot
-	 *         be loaded)
+	 * @return true if the class or one of its ancestors implements the Serializable
+	 *         interface, otherwise false (also if the class cannot be loaded)
 	 */
 	public static boolean isSerializable(String classname) {
 		boolean result;
@@ -75,8 +74,8 @@ public class SerializationHelper implements RevisionHandler {
 	 * 
 	 * @param c
 	 *            the class to check
-	 * @return true if the class or one of its ancestors implements the
-	 *         Serializable interface, otherwise false
+	 * @return true if the class or one of its ancestors implements the Serializable
+	 *         interface, otherwise false
 	 */
 	public static boolean isSerializable(Class<?> c) {
 		return ClassDiscovery.hasInterface(Serializable.class, c);
@@ -87,9 +86,8 @@ public class SerializationHelper implements RevisionHandler {
 	 * 
 	 * @param classname
 	 *            the class to check
-	 * @return true if the class contains a serialVersionUID, otherwise false
-	 *         (also if the class is not implementing serializable or cannot be
-	 *         loaded)
+	 * @return true if the class contains a serialVersionUID, otherwise false (also
+	 *         if the class is not implementing serializable or cannot be loaded)
 	 */
 	public static boolean hasUID(String classname) {
 		boolean result;
@@ -109,8 +107,8 @@ public class SerializationHelper implements RevisionHandler {
 	 * 
 	 * @param c
 	 *            the class to check
-	 * @return true if the class contains a serialVersionUID, otherwise false
-	 *         (also if the class is not implementing serializable)
+	 * @return true if the class contains a serialVersionUID, otherwise false (also
+	 *         if the class is not implementing serializable)
 	 */
 	public static boolean hasUID(Class<?> c) {
 		boolean result;
@@ -136,8 +134,8 @@ public class SerializationHelper implements RevisionHandler {
 	 * 
 	 * @param classname
 	 *            the class to check
-	 * @return true if the class needs to declare one, false otherwise (also if
-	 *         the class cannot be loaded!)
+	 * @return true if the class needs to declare one, false otherwise (also if the
+	 *         class cannot be loaded!)
 	 */
 	public static boolean needsUID(String classname) {
 		boolean result;
@@ -178,8 +176,8 @@ public class SerializationHelper implements RevisionHandler {
 	 * 
 	 * @param classname
 	 *            the class to get the serialVersionUID for
-	 * @return the UID, 0L for non-serializable classes (or if the class cannot
-	 *         be loaded)
+	 * @return the UID, 0L for non-serializable classes (or if the class cannot be
+	 *         loaded)
 	 */
 	public static long getUID(String classname) {
 		long result;
@@ -314,8 +312,8 @@ public class SerializationHelper implements RevisionHandler {
 	}
 
 	/**
-	 * Get a (Weka package classloader aware) {@code ObjectInputStream} instance
-	 * for reading objects from the supplied input stream
+	 * Get a (Weka package classloader aware) {@code ObjectInputStream} instance for
+	 * reading objects from the supplied input stream
 	 *
 	 * @param stream
 	 *            the stream to wrap

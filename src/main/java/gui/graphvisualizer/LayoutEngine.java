@@ -54,15 +54,14 @@ public interface LayoutEngine {
 	ArrayList<GraphNode> getNodes();
 
 	/**
-	 * This method returns the extra controls panel for the LayoutEngine, if
-	 * there is any.
+	 * This method returns the extra controls panel for the LayoutEngine, if there
+	 * is any.
 	 */
 	JPanel getControlPanel();
 
 	/**
-	 * This method returns the progress bar for the LayoutEngine, which shows
-	 * the progress of the layout process, if it takes a while to layout the
-	 * graph
+	 * This method returns the progress bar for the LayoutEngine, which shows the
+	 * progress of the layout process, if it takes a while to layout the graph
 	 */
 	JProgressBar getProgressBar();
 

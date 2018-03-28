@@ -233,8 +233,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * performs an AND conjunction with the capabilities of the given
-	 * Capabilities object and updates itself
+	 * performs an AND conjunction with the capabilities of the given Capabilities
+	 * object and updates itself
 	 * 
 	 * @param c
 	 *            the capabilities to AND with
@@ -268,8 +268,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * performs an OR conjunction with the capabilities of the given
-	 * Capabilities object and updates itself
+	 * performs an OR conjunction with the capabilities of the given Capabilities
+	 * object and updates itself
 	 * 
 	 * @param c
 	 *            the capabilities to OR with
@@ -302,8 +302,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns true if the currently set capabilities support at least all of
-	 * the capabiliites of the given Capabilities object (checks only the enum!)
+	 * Returns true if the currently set capabilities support at least all of the
+	 * capabiliites of the given Capabilities object (checks only the enum!)
 	 * 
 	 * @param c
 	 *            the capabilities to support at least
@@ -331,9 +331,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns true if the currently set capabilities support (or have a
-	 * dependency) at least all of the capabilities of the given Capabilities
-	 * object (checks only the enum!)
+	 * Returns true if the currently set capabilities support (or have a dependency)
+	 * at least all of the capabilities of the given Capabilities object (checks
+	 * only the enum!)
 	 * 
 	 * @param c
 	 *            the capabilities (or dependencies) to support at least
@@ -423,12 +423,11 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 	/**
 	 * enables the given capability. Enabling NOMINAL_ATTRIBUTES also enables
-	 * BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES.
-	 * Enabling BINARY_ATTRIBUTES also enables UNARY_ATTRIBUTES and
-	 * EMPTY_NOMINAL_ATTRIBUTES. Enabling UNARY_ATTRIBUTES also enables
-	 * EMPTY_NOMINAL_ATTRIBUTES. But NOMINAL_CLASS only enables BINARY_CLASS,
-	 * since normal schemes in Weka don't work with datasets that have only 1
-	 * class label (or none).
+	 * BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES. Enabling
+	 * BINARY_ATTRIBUTES also enables UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES.
+	 * Enabling UNARY_ATTRIBUTES also enables EMPTY_NOMINAL_ATTRIBUTES. But
+	 * NOMINAL_CLASS only enables BINARY_CLASS, since normal schemes in Weka don't
+	 * work with datasets that have only 1 class label (or none).
 	 * 
 	 * @param c
 	 *            the capability to enable
@@ -441,17 +440,16 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 		}
 
 		// attributes
-		if (c == Capability.NOMINAL_ATTRIBUTES) 
+		if (c == Capability.NOMINAL_ATTRIBUTES) {
 			enable(Capability.BINARY_ATTRIBUTES);
-		else if (c == Capability.BINARY_ATTRIBUTES) 
+		} else if (c == Capability.BINARY_ATTRIBUTES) {
 			enable(Capability.UNARY_ATTRIBUTES);
-		else if (c == Capability.UNARY_ATTRIBUTES) 
+		} else if (c == Capability.UNARY_ATTRIBUTES) {
 			enable(Capability.EMPTY_NOMINAL_ATTRIBUTES);
-		
-		// class
-		else if (c == Capability.NOMINAL_CLASS)
+		} else if (c == Capability.NOMINAL_CLASS) {
 			enable(Capability.BINARY_CLASS);
-		
+		}
+
 		m_Capabilities.add(c);
 	}
 
@@ -459,10 +457,10 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	 * enables the dependency flag for the given capability Enabling
 	 * NOMINAL_ATTRIBUTES also enables BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and
 	 * EMPTY_NOMINAL_ATTRIBUTES. Enabling BINARY_ATTRIBUTES also enables
-	 * UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES. Enabling UNARY_ATTRIBUTES
-	 * also enables EMPTY_NOMINAL_ATTRIBUTES. But NOMINAL_CLASS only enables
-	 * BINARY_CLASS, since normal schemes in Weka don't work with datasets that
-	 * have only 1 class label (or none).
+	 * UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES. Enabling UNARY_ATTRIBUTES also
+	 * enables EMPTY_NOMINAL_ATTRIBUTES. But NOMINAL_CLASS only enables
+	 * BINARY_CLASS, since normal schemes in Weka don't work with datasets that have
+	 * only 1 class label (or none).
 	 * 
 	 * @param c
 	 *            the capability to enable the dependency flag for
@@ -475,17 +473,16 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 		}
 
 		// attributes
-		if (c == Capability.NOMINAL_ATTRIBUTES) 
+		if (c == Capability.NOMINAL_ATTRIBUTES) {
 			enableDependency(Capability.BINARY_ATTRIBUTES);
-		else if (c == Capability.BINARY_ATTRIBUTES) 
+		} else if (c == Capability.BINARY_ATTRIBUTES) {
 			enableDependency(Capability.UNARY_ATTRIBUTES);
-		else if (c == Capability.UNARY_ATTRIBUTES) 
+		} else if (c == Capability.UNARY_ATTRIBUTES) {
 			enableDependency(Capability.EMPTY_NOMINAL_ATTRIBUTES);
-		
-		// class
-		else if (c == Capability.NOMINAL_CLASS) 
+		} else if (c == Capability.NOMINAL_CLASS) {
 			enableDependency(Capability.BINARY_CLASS);
-		
+		}
+
 		m_Dependencies.add(c);
 	}
 
@@ -589,8 +586,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 	/**
 	 * disables the given capability Disabling NOMINAL_ATTRIBUTES also disables
-	 * BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES.
-	 * Disabling BINARY_ATTRIBUTES also disables UNARY_ATTRIBUTES and
+	 * BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES. Disabling
+	 * BINARY_ATTRIBUTES also disables UNARY_ATTRIBUTES and
 	 * EMPTY_NOMINAL_ATTRIBUTES. Disabling UNARY_ATTRIBUTES also disables
 	 * EMPTY_NOMINAL_ATTRIBUTES. The same hierarchy applies to the class
 	 * capabilities.
@@ -606,28 +603,26 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 		}
 
 		// attributes
-		if (c == Capability.NOMINAL_ATTRIBUTES) 
+		if (c == Capability.NOMINAL_ATTRIBUTES) {
 			disable(Capability.BINARY_ATTRIBUTES);
-		else if (c == Capability.BINARY_ATTRIBUTES) 
+		} else if (c == Capability.BINARY_ATTRIBUTES) {
 			disable(Capability.UNARY_ATTRIBUTES);
-		else if (c == Capability.UNARY_ATTRIBUTES) 
+		} else if (c == Capability.UNARY_ATTRIBUTES) {
 			disable(Capability.EMPTY_NOMINAL_ATTRIBUTES);
-		
-		// class
-		else if (c == Capability.NOMINAL_CLASS) 
+		} else if (c == Capability.NOMINAL_CLASS) {
 			disable(Capability.BINARY_CLASS);
-		else if (c == Capability.BINARY_CLASS) 
+		} else if (c == Capability.BINARY_CLASS) {
 			disable(Capability.UNARY_CLASS);
-		else if (c == Capability.UNARY_CLASS) 
+		} else if (c == Capability.UNARY_CLASS) {
 			disable(Capability.EMPTY_NOMINAL_CLASS);
-		
+		}
 
 		m_Capabilities.remove(c);
 	}
 
 	/**
-	 * disables the dependency of the given capability Disabling
-	 * NOMINAL_ATTRIBUTES also disables BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and
+	 * disables the dependency of the given capability Disabling NOMINAL_ATTRIBUTES
+	 * also disables BINARY_ATTRIBUTES, UNARY_ATTRIBUTES and
 	 * EMPTY_NOMINAL_ATTRIBUTES. Disabling BINARY_ATTRIBUTES also disables
 	 * UNARY_ATTRIBUTES and EMPTY_NOMINAL_ATTRIBUTES. Disabling UNARY_ATTRIBUTES
 	 * also disables EMPTY_NOMINAL_ATTRIBUTES. The same hierarchy applies to the
@@ -644,21 +639,20 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 		}
 
 		// attributes
-		if (c == Capability.NOMINAL_ATTRIBUTES) 
+		if (c == Capability.NOMINAL_ATTRIBUTES) {
 			disableDependency(Capability.BINARY_ATTRIBUTES);
-		else if (c == Capability.BINARY_ATTRIBUTES) 
+		} else if (c == Capability.BINARY_ATTRIBUTES) {
 			disableDependency(Capability.UNARY_ATTRIBUTES);
-		else if (c == Capability.UNARY_ATTRIBUTES) 
+		} else if (c == Capability.UNARY_ATTRIBUTES) {
 			disableDependency(Capability.EMPTY_NOMINAL_ATTRIBUTES);
-		
-		// class
-		else if (c == Capability.NOMINAL_CLASS) 
+		} else if (c == Capability.NOMINAL_CLASS) {
 			disableDependency(Capability.BINARY_CLASS);
-		else if (c == Capability.BINARY_CLASS) 
+		} else if (c == Capability.BINARY_CLASS) {
 			disableDependency(Capability.UNARY_CLASS);
-		else if (c == Capability.UNARY_CLASS) 
+		} else if (c == Capability.UNARY_CLASS) {
 			disableDependency(Capability.EMPTY_NOMINAL_CLASS);
-		
+		}
+
 		m_Dependencies.remove(c);
 	}
 
@@ -851,8 +845,7 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	 * 
 	 * @param c
 	 *            the capability to test
-	 * @return true if the classifier handler has a dependency for the
-	 *         capability
+	 * @return true if the classifier handler has a dependency for the capability
 	 */
 	public boolean hasDependency(Capability c) {
 
@@ -895,8 +888,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Generates the message for, e.g., an exception. Adds the classname before
-	 * the actual message and returns that string.
+	 * Generates the message for, e.g., an exception. Adds the classname before the
+	 * actual message and returns that string.
 	 * 
 	 * @param msg
 	 *            the actual content of the message, e.g., exception
@@ -919,9 +912,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Test the given attribute, whether it can be processed by the handler,
-	 * given its capabilities. The method assumes that the specified attribute
-	 * is not the class attribute.
+	 * Test the given attribute, whether it can be processed by the handler, given
+	 * its capabilities. The method assumes that the specified attribute is not the
+	 * class attribute.
 	 * 
 	 * @param att
 	 *            the attribute to test
@@ -933,8 +926,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Test the given attribute, whether it can be processed by the handler,
-	 * given its capabilities.
+	 * Test the given attribute, whether it can be processed by the handler, given
+	 * its capabilities.
 	 * 
 	 * @param att
 	 *            the attribute to test
@@ -985,15 +978,15 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 				capEmpty = Capability.EMPTY_NOMINAL_ATTRIBUTES;
 			}
 
-			if (handles(cap) && (att.numValues() > 2)) 
+			if (handles(cap) && (att.numValues() > 2)) {
 				break;
-			else if (handles(capBinary) && (att.numValues() == 2)) 
+			} else if (handles(capBinary) && (att.numValues() == 2)) {
 				break;
-			else if (handles(capUnary) && (att.numValues() == 1)) 
+			} else if (handles(capUnary) && (att.numValues() == 1)) {
 				break;
-			else if (handles(capEmpty) && (att.numValues() == 0)) 
+			} else if (handles(capEmpty) && (att.numValues() == 0)) {
 				break;
-			
+			}
 
 			if (att.numValues() == 0) {
 				m_FailReason = new UnsupportedAttributeTypeException(
@@ -1030,11 +1023,11 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 			break;
 
 		case Attribute.DATE:
-			if (isClass) 
+			if (isClass) {
 				cap = Capability.DATE_CLASS;
-			else 
+			} else {
 				cap = Capability.DATE_ATTRIBUTES;
-			
+			}
 
 			if (!handles(cap)) {
 				m_FailReason = new UnsupportedAttributeTypeException(
@@ -1044,11 +1037,11 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 			break;
 
 		case Attribute.STRING:
-			if (isClass) 
+			if (isClass) {
 				cap = Capability.STRING_CLASS;
-			else 
+			} else {
 				cap = Capability.STRING_ATTRIBUTES;
-			
+			}
 
 			if (!handles(cap)) {
 				m_FailReason = new UnsupportedAttributeTypeException(
@@ -1058,10 +1051,11 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 			break;
 
 		case Attribute.RELATIONAL:
-			if (isClass) 
+			if (isClass) {
 				cap = Capability.RELATIONAL_CLASS;
-			else 
+			} else {
 				cap = Capability.RELATIONAL_ATTRIBUTES;
+			}
 
 			if (!handles(cap)) {
 				m_FailReason = new UnsupportedAttributeTypeException(
@@ -1082,11 +1076,11 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Tests the given data, whether it can be processed by the handler, given
-	 * its capabilities. Classifiers implementing the
+	 * Tests the given data, whether it can be processed by the handler, given its
+	 * capabilities. Classifiers implementing the
 	 * <code>MultiInstanceCapabilitiesHandler</code> interface are checked
-	 * automatically for their multi-instance Capabilities (if no bags, then
-	 * only the bag-structure, otherwise only the first bag).
+	 * automatically for their multi-instance Capabilities (if no bags, then only
+	 * the bag-structure, otherwise only the first bag).
 	 * 
 	 * @param data
 	 *            the data to test
@@ -1099,10 +1093,10 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 	/**
 	 * Tests a certain range of attributes of the given data, whether it can be
-	 * processed by the handler, given its capabilities. Classifiers
-	 * implementing the <code>MultiInstanceCapabilitiesHandler</code> interface
-	 * are checked automatically for their multi-instance Capabilities (if no
-	 * bags, then only the bag-structure, otherwise only the first bag).
+	 * processed by the handler, given its capabilities. Classifiers implementing
+	 * the <code>MultiInstanceCapabilitiesHandler</code> interface are checked
+	 * automatically for their multi-instance Capabilities (if no bags, then only
+	 * the bag-structure, otherwise only the first bag).
 	 * 
 	 * @param data
 	 *            the data to test
@@ -1124,7 +1118,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 			return true;
 		}
 
-		int i, n, m;
+		int i;
+		int n;
+		int m;
 		Attribute att;
 		Instance inst;
 		boolean testClass;
@@ -1325,9 +1321,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tests the given attribute by calling the test(Attribute,boolean) method
-	 * and throws an exception if the test fails. The method assumes that the
-	 * specified attribute is not the class attribute.
+	 * tests the given attribute by calling the test(Attribute,boolean) method and
+	 * throws an exception if the test fails. The method assumes that the specified
+	 * attribute is not the class attribute.
 	 * 
 	 * @param att
 	 *            the attribute to test
@@ -1341,8 +1337,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tests the given attribute by calling the test(Attribute,boolean) method
-	 * and throws an exception if the test fails.
+	 * tests the given attribute by calling the test(Attribute,boolean) method and
+	 * throws an exception if the test fails.
 	 * 
 	 * @param att
 	 *            the attribute to test
@@ -1360,8 +1356,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tests the given data by calling the test(Instances,int,int) method and
-	 * throws an exception if the test fails.
+	 * tests the given data by calling the test(Instances,int,int) method and throws
+	 * an exception if the test fails.
 	 * 
 	 * @param data
 	 *            the data to test
@@ -1406,17 +1402,17 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	public String toString() {
 
 		Vector<Capability> sorted;
-		StringBuffer result;
+		StringBuilder result;
 
-		result = new StringBuffer();
+		result = new StringBuilder();
 
 		// capabilities
-		sorted = new Vector<Capability>(m_Capabilities);
+		sorted = new Vector<>(m_Capabilities);
 		Collections.sort(sorted);
 		result.append("Capabilities: " + sorted.toString() + "\n");
 
 		// dependencies
-		sorted = new Vector<Capability>(m_Dependencies);
+		sorted = new Vector<>(m_Dependencies);
 		Collections.sort(sorted);
 		result.append("Dependencies: " + sorted.toString() + "\n");
 
@@ -1427,9 +1423,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * turns the capabilities object into source code. The returned source code
-	 * is a block that creates a Capabilities object named 'objectname' and
-	 * enables all the capabilities of this Capabilities object.
+	 * turns the capabilities object into source code. The returned source code is a
+	 * block that creates a Capabilities object named 'objectname' and enables all
+	 * the capabilities of this Capabilities object.
 	 * 
 	 * @param objectname
 	 *            the name of the Capabilities object being instantiated
@@ -1440,9 +1436,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * turns the capabilities object into source code. The returned source code
-	 * is a block that creates a Capabilities object named 'objectname' and
-	 * enables all the capabilities of this Capabilities object.
+	 * turns the capabilities object into source code. The returned source code is a
+	 * block that creates a Capabilities object named 'objectname' and enables all
+	 * the capabilities of this Capabilities object.
 	 * 
 	 * @param objectname
 	 *            the name of the Capabilities object being instantiated
@@ -1452,13 +1448,13 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	 */
 	public String toSource(String objectname, int indent) {
 
-		StringBuffer result;
+		StringBuilder result;
 		String capsName;
 		String capName;
 		String indentStr;
 		int i;
 
-		result = new StringBuffer();
+		result = new StringBuilder();
 
 		capsName = Capabilities.class.getName();
 		capName = Capabilities.Capability.class.getName().replaceAll("\\$", ".");
@@ -1481,21 +1477,25 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 		for (Capability cap : Capability.values()) {
 			// capability
 			if (handles(cap)) {
-				if (cap == Capability.NOMINAL_ATTRIBUTES)
+				if (cap == Capability.NOMINAL_ATTRIBUTES) {
 					hasNominalAtt = true;
-				
-				if (cap == Capability.NOMINAL_CLASS)
+				}
+
+				if (cap == Capability.NOMINAL_CLASS) {
 					hasNominalClass = true;
-				
-				if (cap == Capability.BINARY_ATTRIBUTES)
+				}
+
+				if (cap == Capability.BINARY_ATTRIBUTES) {
 					hasBinaryAtt = true;
-				
-				if (cap == Capability.UNARY_ATTRIBUTES)
+				}
+
+				if (cap == Capability.UNARY_ATTRIBUTES) {
 					hasUnaryAtt = true;
-				
-				if (cap == Capability.EMPTY_NOMINAL_ATTRIBUTES)
-				
-				capsList.add(cap);
+				}
+
+				if (cap == Capability.EMPTY_NOMINAL_ATTRIBUTES) {
+					capsList.add(cap);
+				}
 			}
 		}
 
@@ -1527,8 +1527,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 	/**
 	 * returns a Capabilities object specific for this data. The multi-instance
-	 * capability is not checked as well as the minimum number of instances is
-	 * not set.
+	 * capability is not checked as well as the minimum number of instances is not
+	 * set.
 	 * 
 	 * @param data
 	 *            the data to base the capabilities on
@@ -1541,8 +1541,8 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * returns a Capabilities object specific for this data. The minimum number
-	 * of instances is not set, the check for multi-instance data is optional.
+	 * returns a Capabilities object specific for this data. The minimum number of
+	 * instances is not set, the check for multi-instance data is optional.
 	 * 
 	 * @param data
 	 *            the data to base the capabilities on
@@ -1555,7 +1555,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	public static Capabilities forInstances(Instances data, boolean multi) throws Exception {
 		Capabilities result;
 		Capabilities multiInstance;
-		int i, n, m;
+		int i;
+		int n;
+		int m;
 		Instance inst;
 		boolean missing;
 
@@ -1702,8 +1704,7 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * loads the given dataset and prints the Capabilities necessary to process
-	 * it.
+	 * loads the given dataset and prints the Capabilities necessary to process it.
 	 * <p/>
 	 * 
 	 * Valid parameters:
@@ -1735,7 +1736,7 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 		// get parameters
 		tmpStr = Utils.getOption("file", args);
-		if (tmpStr.length() == 0) {
+		if (tmpStr.isEmpty()) {
 			throw new Exception("No file provided with option '-file'!");
 		} else {
 			filename = tmpStr;
@@ -1743,9 +1744,9 @@ public class Capabilities implements Cloneable, Serializable, RevisionHandler {
 
 		tmpStr = Utils.getOption("c", args);
 		if (tmpStr.length() != 0) {
-			if (tmpStr.equals("first")) {
+			if ("first".equals(tmpStr)) {
 				classIndex = 0;
-			} else if (tmpStr.equals("last")) {
+			} else if ("last".equals(tmpStr)) {
 				classIndex = -2; // last
 			} else {
 				classIndex = Integer.parseInt(tmpStr) - 1;

@@ -22,6 +22,7 @@
 package core;
 
 import java.io.Serializable;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A <code>Tag</code> simply associates a numeric ID with a String description.
@@ -79,12 +80,12 @@ public class Tag implements Serializable, RevisionHandler {
 
 	public Tag(int ident, String identStr, String readable, boolean upperCase) {
 		m_ID = ident;
-		if (identStr.length() == 0) {
+		if (identStr.isEmpty()) {
 			m_IDStr = Integer.toString(ident);
 		} else {
 			m_IDStr = identStr;
 			if (upperCase) {
-				m_IDStr = identStr.toUpperCase();
+				m_IDStr = StringUtils.upperCase(identStr);
 			}
 		}
 		m_Readable = readable;
@@ -182,8 +183,8 @@ public class Tag implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * returns a string that can be used in the listOption methods to list all
-	 * the available options, i.e., "\t\tID = Text\n" for each option
+	 * returns a string that can be used in the listOption methods to list all the
+	 * available options, i.e., "\t\tID = Text\n" for each option
 	 * 
 	 * @param tags
 	 *            the tags to create the string for

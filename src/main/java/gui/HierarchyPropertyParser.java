@@ -24,6 +24,7 @@ package gui;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class implements a parser to read properties that have a hierarchy(i.e.
@@ -54,7 +55,7 @@ public class HierarchyPropertyParser implements Serializable {
 	private TreeNode mCurrent;
 
 	/** The level separate in the path */
-	private String mSeperator = new String(".");
+	private String mSeperator = ".";
 
 	/** The depth of the tree */
 	private int mDepth = 0;
@@ -112,7 +113,7 @@ public class HierarchyPropertyParser implements Serializable {
 		StringTokenizer st = new StringTokenizer(p, delim);
 		// System.err.println("delim: "+delim);
 		while (st.hasMoreTokens()) {
-			String property = st.nextToken().trim();
+			String property = StringUtils.trim(st.nextToken());
 			if (!isHierachic(property)) {
 				throw new Exception("The given property is not in" + "hierachy structure with seperators!");
 			}
@@ -184,8 +185,8 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * Tokenize the given string based on the seperator and put the tokens into
-	 * an array of strings
+	 * Tokenize the given string based on the seperator and put the tokens into an
+	 * array of strings
 	 * 
 	 * @param rawString
 	 *            the given string
@@ -258,7 +259,7 @@ public class HierarchyPropertyParser implements Serializable {
 	 *            the given string
 	 */
 	public boolean isHierachic(String string) {
-		int index = string.indexOf(mSeperator);
+		int index = StringUtils.indexOf(string, mSeperator);
 		// Seperator not occur or first occurance at the end
 		if ((index == (string.length() - 1)) || (index == -1)) {
 			return false;
@@ -268,9 +269,9 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * Helper function to search for the given target string in a given vector
-	 * in which the elements' value may hopefully is equal to the target. If
-	 * such elements are found the first index is returned, otherwise -1
+	 * Helper function to search for the given target string in a given vector in
+	 * which the elements' value may hopefully is equal to the target. If such
+	 * elements are found the first index is returned, otherwise -1
 	 * 
 	 * @param vct
 	 *            the given vector
@@ -293,14 +294,13 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * Go to a certain node of the tree according to the specified path Note
-	 * that the path must be absolute path from the root. <br>
+	 * Go to a certain node of the tree according to the specified path Note that
+	 * the path must be absolute path from the root. <br>
 	 * For relative path, see goDown(String path).
 	 * 
 	 * @param path
 	 *            the given absolute path
-	 * @return whether the path exists, if false the current position does not
-	 *         move
+	 * @return whether the path exists, if false the current position does not move
 	 */
 	public synchronized boolean goTo(String path) {
 		if (!isHierachic(path)) {
@@ -333,14 +333,12 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * Go to a certain node of the tree down from the current node according to
-	 * the specified relative path. The path does not contain the value of
-	 * current node
+	 * Go to a certain node of the tree down from the current node according to the
+	 * specified relative path. The path does not contain the value of current node
 	 * 
 	 * @param path
 	 *            the given relative path
-	 * @return whether the path exists, if false the current position does not
-	 *         move
+	 * @return whether the path exists, if false the current position does not move
 	 */
 	public synchronized boolean goDown(String path) {
 		if (!isHierachic(path)) {
@@ -388,10 +386,10 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * Go to one child node from the current position in the tree according to
-	 * the given value <br>
-	 * If the child node with the given value cannot be found it returns false,
-	 * true otherwise. If false, the current position does not change
+	 * Go to one child node from the current position in the tree according to the
+	 * given value <br>
+	 * If the child node with the given value cannot be found it returns false, true
+	 * otherwise. If false, the current position does not change
 	 * 
 	 * @param value
 	 *            the value of the given child
@@ -412,8 +410,8 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * Go to one child node from the current position in the tree according to
-	 * the given position <br>
+	 * Go to one child node from the current position in the tree according to the
+	 * given position <br>
 	 * 
 	 * @param pos
 	 *            the position of the given child
@@ -442,8 +440,7 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * The value in the children nodes. If current node is leaf, it returns
-	 * null.
+	 * The value in the children nodes. If current node is leaf, it returns null.
 	 * 
 	 * @return the value in the children nodes
 	 */
@@ -519,9 +516,9 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * The context of the current node, i.e. the path from the root to the
-	 * parent node of the current node, seperated by the seperator. If root, it
-	 * returns null
+	 * The context of the current node, i.e. the path from the root to the parent
+	 * node of the current node, seperated by the seperator. If root, it returns
+	 * null
 	 * 
 	 * @return the context path
 	 */
@@ -530,8 +527,8 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * The full value of the current node, i.e. its context + seperator + its
-	 * value. For root, only its value.
+	 * The full value of the current node, i.e. its context + seperator + its value.
+	 * For root, only its value.
 	 * 
 	 * @return the context path
 	 */
@@ -560,7 +557,7 @@ public class HierarchyPropertyParser implements Serializable {
 	 * @return the node in text format
 	 */
 	private String showNode(TreeNode node, boolean[] hasBar) {
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		for (int i = 0; i < (node.level - 1); i++) {
 			if (hasBar[i]) {
@@ -606,7 +603,7 @@ public class HierarchyPropertyParser implements Serializable {
 	 *            should contain nothing
 	 */
 	public static void main(String args[]) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("node1.node1_1.node1_1_1.node1_1_1_1, ");
 		sb.append("node1.node1_1.node1_1_1.node1_1_1_2, ");
 		sb.append("node1.node1_1.node1_1_1.node1_1_1_3, ");
@@ -660,9 +657,9 @@ public class HierarchyPropertyParser implements Serializable {
 	}
 
 	/**
-	 * The inner class implementing a single tree node. All fields are made
-	 * public simply for convenient access, Although a severe violation of OO
-	 * Design principle.
+	 * The inner class implementing a single tree node. All fields are made public
+	 * simply for convenient access, Although a severe violation of OO Design
+	 * principle.
 	 */
 	private class TreeNode implements Serializable {
 

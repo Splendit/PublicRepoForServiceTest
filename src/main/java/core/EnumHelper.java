@@ -81,8 +81,8 @@ public class EnumHelper {
 	}
 
 	/**
-	 * Set the selected/wrapped enum value (as obtained by calling toString() on
-	 * the enum value)
+	 * Set the selected/wrapped enum value (as obtained by calling toString() on the
+	 * enum value)
 	 *
 	 * @param selectedEnumValue
 	 *            the enum value to wrap
@@ -92,8 +92,8 @@ public class EnumHelper {
 	}
 
 	/**
-	 * Get the selected/wrapped enum value (as obtained by calling toString() on
-	 * the enum value)
+	 * Get the selected/wrapped enum value (as obtained by calling toString() on the
+	 * enum value)
 	 *
 	 * @return the enum value to wrap
 	 */
@@ -102,8 +102,8 @@ public class EnumHelper {
 	}
 
 	/**
-	 * Helper method to recover an enum value given the fully qualified name of
-	 * the enum and the value in question as strings
+	 * Helper method to recover an enum value given the fully qualified name of the
+	 * enum and the value in question as strings
 	 *
 	 * @param enmumClass
 	 *            a string containing the fully qualified name of the enum class

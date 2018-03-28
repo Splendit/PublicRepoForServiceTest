@@ -40,9 +40,9 @@ public interface OptionHandler {
 	Enumeration<Option> listOptions();
 
 	/**
-	 * Sets the OptionHandler's options using the given list. All options will
-	 * be set (or reset) during this call (i.e. incremental setting of options
-	 * is not possible).
+	 * Sets the OptionHandler's options using the given list. All options will be
+	 * set (or reset) during this call (i.e. incremental setting of options is not
+	 * possible).
 	 *
 	 * @param options
 	 *            the list of options as an array of strings

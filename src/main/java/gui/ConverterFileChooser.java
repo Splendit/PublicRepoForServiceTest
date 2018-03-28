@@ -50,6 +50,7 @@ import core.converters.AbstractLoader;
 import core.converters.AbstractSaver;
 import core.converters.ConverterUtils;
 import core.converters.FileSourcedConverter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A specialized JFileChooser that lists all available file Loaders and Savers.
@@ -106,8 +107,7 @@ public class ConverterFileChooser extends JFileChooser {
 	protected Capabilities m_CapabilitiesFilter;
 
 	/**
-	 * whether to popup a dialog in case the file already exists (only save
-	 * dialog).
+	 * whether to popup a dialog in case the file already exists (only save dialog).
 	 */
 	protected boolean m_OverwriteWarning = true;
 
@@ -195,30 +195,23 @@ public class ConverterFileChooser extends JFileChooser {
 		setAccessory(panel);
 
 		m_Editor = new GenericObjectEditor(false);
-		((GenericObjectEditor.GOEPanel) m_Editor.getCustomEditor()).addOkListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				m_EditorResult = JFileChooser.APPROVE_OPTION;
-				m_CurrentConverter = m_Editor.getValue();
-				// thanks to serialization and transient readers/streams, we
-				// have
-				// to set the file again to initialize the converter again
-				try {
-					((FileSourcedConverter) m_CurrentConverter)
-							.setFile(((FileSourcedConverter) m_CurrentConverter).retrieveFile());
-				} catch (Exception ex) {
-					// ignored
-				}
+		((GenericObjectEditor.GOEPanel) m_Editor.getCustomEditor()).addOkListener((ActionEvent e) -> {
+			m_EditorResult = JFileChooser.APPROVE_OPTION;
+			m_CurrentConverter = m_Editor.getValue();
+			// thanks to serialization and transient readers/streams, we
+			// have
+			// to set the file again to initialize the converter again
+			try {
+				((FileSourcedConverter) m_CurrentConverter)
+						.setFile(((FileSourcedConverter) m_CurrentConverter).retrieveFile());
+			} catch (Exception ex) {
+				// ignored
 			}
 		});
-		((GenericObjectEditor.GOEPanel) m_Editor.getCustomEditor()).addCancelListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				m_EditorResult = JFileChooser.CANCEL_OPTION;
-			}
-		});
+		((GenericObjectEditor.GOEPanel) m_Editor.getCustomEditor())
+				.addCancelListener((ActionEvent e) -> m_EditorResult = JFileChooser.CANCEL_OPTION);
 	}
-	
+
 	/**
 	 * Opens an object from a file selected by the user.
 	 * 
@@ -226,15 +219,13 @@ public class ConverterFileChooser extends JFileChooser {
 	 */
 	protected Object openObject(File selected) {
 
-		try {
-			ObjectInputStream oi = SerializationHelper
-					.getObjectInputStream(new BufferedInputStream(new FileInputStream(selected)));
+		try (ObjectInputStream oi = SerializationHelper
+				.getObjectInputStream(new BufferedInputStream(new FileInputStream(selected)))) {
 			/*
 			 * ObjectInputStream oi = new ObjectInputStream(new BufferedInputStream( new
 			 * FileInputStream(selected)));
 			 */
 			Object obj = oi.readObject();
-			oi.close();
 			return obj;
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this, "Couldn't read object: " + selected.getName() + "\n" + ex.getMessage(),
@@ -242,7 +233,7 @@ public class ConverterFileChooser extends JFileChooser {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * filters out all non-core loaders if only those should be displayed.
 	 * 
@@ -304,8 +295,7 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * filters the list of file filters according to the currently set.
-	 * Capabilities
+	 * filters the list of file filters according to the currently set. Capabilities
 	 * 
 	 * @param list
 	 *            the filters to check
@@ -413,9 +403,7 @@ public class ConverterFileChooser extends JFileChooser {
 		} else {
 			list = filterSaverFileFilters(filterNonCoreSaverFileFilters(m_SaverFileFilters));
 		}
-		for (ExtensionFileFilter iterator : list) {
-			addChoosableFileFilter(iterator);
-		}
+		list.forEach(iterator -> addChoosableFileFilter(iterator));
 		if (list.size() > 0) {
 			if ((m_LastFilter == null) || (!list.contains(m_LastFilter))) {
 				setFileFilter(list.get(0));
@@ -428,13 +416,10 @@ public class ConverterFileChooser extends JFileChooser {
 		if (m_Listener != null) {
 			removePropertyChangeListener(m_Listener);
 		}
-		m_Listener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				// filter changed
-				if (evt.getPropertyName().equals(FILE_FILTER_CHANGED_PROPERTY)) {
-					updateCurrentConverter();
-				}
+		m_Listener = (PropertyChangeEvent evt) -> {
+			// filter changed
+			if (evt.getPropertyName().equals(FILE_FILTER_CHANGED_PROPERTY)) {
+				updateCurrentConverter();
 			}
 		};
 		addPropertyChangeListener(m_Listener);
@@ -452,8 +437,8 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * sets the capabilities that the savers must have. use null if all should
-	 * be listed.
+	 * sets the capabilities that the savers must have. use null if all should be
+	 * listed.
 	 * 
 	 * @param value
 	 *            the minimum Capabilities the savers must have
@@ -477,8 +462,8 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * Whether a warning is popped up if the file that is to be saved already
-	 * exists (only save dialog).
+	 * Whether a warning is popped up if the file that is to be saved already exists
+	 * (only save dialog).
 	 * 
 	 * @param value
 	 *            if true a warning will be popup
@@ -488,8 +473,8 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * Returns whether a popup appears with a warning that the file already
-	 * exists (only save dialog).
+	 * Returns whether a popup appears with a warning that the file already exists
+	 * (only save dialog).
 	 * 
 	 * @return true if a warning pops up
 	 */
@@ -529,9 +514,8 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * Returns whether only the hardcoded core converters are displayed.
-	 * Necessary for RMI/REmote Experiments (dynamic class discovery doesn't
-	 * work there!).
+	 * Returns whether only the hardcoded core converters are displayed. Necessary
+	 * for RMI/REmote Experiments (dynamic class discovery doesn't work there!).
 	 * 
 	 * @return true if the file must exist
 	 * @see #m_CoreConvertersOnly
@@ -583,7 +567,7 @@ public class ConverterFileChooser extends JFileChooser {
 			if (getFileFilter() instanceof ExtensionFileFilter) {
 				String filename = getSelectedFile().getAbsolutePath();
 				String[] extensions = ((ExtensionFileFilter) getFileFilter()).getExtensions();
-				if (!filename.endsWith(extensions[0])) {
+				if (!StringUtils.endsWith(filename, extensions[0])) {
 					filename += extensions[0];
 					setSelectedFile(new File(filename));
 				}
@@ -656,7 +640,7 @@ public class ConverterFileChooser extends JFileChooser {
 			if (getFileFilter() instanceof ExtensionFileFilter) {
 				String filename = getSelectedFile().getAbsolutePath();
 				String[] extensions = ((ExtensionFileFilter) getFileFilter()).getExtensions();
-				if (!filename.endsWith(extensions[0])) {
+				if (!StringUtils.endsWith(filename, extensions[0])) {
 					filename += extensions[0];
 					setSelectedFile(new File(filename));
 				}
@@ -712,8 +696,8 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * returns the loader that was chosen by the user, can be null in case the
-	 * user aborted the dialog or the save dialog was shown.
+	 * returns the loader that was chosen by the user, can be null in case the user
+	 * aborted the dialog or the save dialog was shown.
 	 * 
 	 * @return the chosen loader, if any
 	 */
@@ -728,8 +712,8 @@ public class ConverterFileChooser extends JFileChooser {
 	}
 
 	/**
-	 * returns the saver that was chosen by the user, can be null in case the
-	 * user aborted the dialog or the open dialog was shown.
+	 * returns the saver that was chosen by the user, can be null in case the user
+	 * aborted the dialog or the open dialog was shown.
 	 * 
 	 * @return the chosen saver, if any
 	 */

@@ -35,6 +35,7 @@ import java.util.Vector;
 import core.ClassDiscovery;
 import core.ClassDiscovery.StringCompare;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class can generate the properties object that is normally loaded from
@@ -89,32 +90,31 @@ public class GenericPropertiesCreator {
 	 * name of property whether to use the dynamic approach or the old
 	 * GenericObjectEditor.props file
 	 */
-	public final static String USE_DYNAMIC = new String("UseDynamic");
+	public final static String USE_DYNAMIC = "UseDynamic";
 
 	/**
-	 * The name of the properties file to use as a template. Contains the
-	 * packages in which to look for derived classes. It has the same structure
-	 * as the <code>PROPERTY_FILE</code>
+	 * The name of the properties file to use as a template. Contains the packages
+	 * in which to look for derived classes. It has the same structure as the
+	 * <code>PROPERTY_FILE</code>
 	 * 
 	 * @see #PROPERTY_FILE
 	 */
-	protected static String CREATOR_FILE = new String("weka/gui/GenericPropertiesCreator.props");
+	protected static String CREATOR_FILE = "weka/gui/GenericPropertiesCreator.props";
 
 	/**
-	 * The name of the properties file that lists
-	 * classes/interfaces/superclasses to exclude from being shown in the GUI.
-	 * See the file for more information.
+	 * The name of the properties file that lists classes/interfaces/superclasses to
+	 * exclude from being shown in the GUI. See the file for more information.
 	 */
-	protected static String EXCLUDE_FILE = new String("weka/gui/GenericPropertiesCreator.excludes");
+	protected static String EXCLUDE_FILE = "weka/gui/GenericPropertiesCreator.excludes";
 
 	/** the prefix for an interface exclusion */
-	protected static String EXCLUDE_INTERFACE = new String("I");
+	protected static String EXCLUDE_INTERFACE = "I";
 
 	/** the prefix for an (exact) class exclusion */
-	protected static String EXCLUDE_CLASS = new String("C");
+	protected static String EXCLUDE_CLASS = "C";
 
 	/** the prefix for a superclass exclusion */
-	protected static String EXCLUDE_SUPERCLASS = new String("S");
+	protected static String EXCLUDE_SUPERCLASS = "S";
 
 	/**
 	 * The name of the properties file for the static GenericObjectEditor (
@@ -123,7 +123,7 @@ public class GenericPropertiesCreator {
 	 * @see GenericObjectEditor
 	 * @see #USE_DYNAMIC
 	 */
-	protected static String PROPERTY_FILE = new String("weka/gui/GenericObjectEditor.props");
+	protected static String PROPERTY_FILE = "weka/gui/GenericObjectEditor.props";
 
 	/** Globally available properties */
 	protected static GenericPropertiesCreator GLOBAL_CREATOR;
@@ -164,8 +164,8 @@ public class GenericPropertiesCreator {
 	protected Properties m_OutputProperties;
 
 	/**
-	 * whether an explicit input file was given - if false, the Utils class is
-	 * used to locate the props-file
+	 * whether an explicit input file was given - if false, the Utils class is used
+	 * to locate the props-file
 	 */
 	protected boolean m_ExplicitPropsFile;
 
@@ -190,8 +190,8 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * initializes the creator, the given file overrides the props-file search
-	 * of the Utils class
+	 * initializes the creator, the given file overrides the props-file search of
+	 * the Utils class
 	 * 
 	 * @param filename
 	 *            the file containing the packages to create a props file from
@@ -230,8 +230,8 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * Regenerate the global output properties. Does not load the input
-	 * properties, instead uses the GLOBAL_INPUT_PROPERTIES
+	 * Regenerate the global output properties. Does not load the input properties,
+	 * instead uses the GLOBAL_INPUT_PROPERTIES
 	 */
 	public static void regenerateGlobalOutputProperties() {
 		if (GLOBAL_CREATOR != null) {
@@ -247,12 +247,11 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * if FALSE, the locating of a props-file of the Utils-class is used,
-	 * otherwise it's tried to load the specified file
+	 * if FALSE, the locating of a props-file of the Utils-class is used, otherwise
+	 * it's tried to load the specified file
 	 * 
 	 * @param value
-	 *            if true the specified file will be loaded not via the
-	 *            Utils-class
+	 *            if true the specified file will be loaded not via the Utils-class
 	 * @see Utils#readProperties(String)
 	 * @see #loadInputProperties()
 	 */
@@ -261,11 +260,11 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * returns TRUE, if a file is loaded and not the Utils class used for
-	 * locating the props file.
+	 * returns TRUE, if a file is loaded and not the Utils class used for locating
+	 * the props file.
 	 * 
-	 * @return true if the specified file is used and not the one found by the
-	 *         Utils class
+	 * @return true if the specified file is used and not the one found by the Utils
+	 *         class
 	 * @see Utils#readProperties(String)
 	 * @see #loadInputProperties()
 	 */
@@ -302,8 +301,8 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * sets the file to get the information about the packages from.
-	 * automatically sets explicitPropsFile to TRUE.
+	 * sets the file to get the information about the packages from. automatically
+	 * sets explicitPropsFile to TRUE.
 	 * 
 	 * @param filename
 	 *            the filename for the input
@@ -324,8 +323,8 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * returns the output properties object (structure like the template, but
-	 * filled with classes instead of packages)
+	 * returns the output properties object (structure like the template, but filled
+	 * with classes instead of packages)
 	 * 
 	 * @return the output properties (filled with classes)
 	 */
@@ -372,15 +371,15 @@ public class GenericPropertiesCreator {
 					String item = tok.nextToken();
 					// get list
 					Vector<String> list = new Vector<>();
-					if (item.startsWith(EXCLUDE_INTERFACE + ":")) {
+					if (StringUtils.startsWith(item, EXCLUDE_INTERFACE + ":")) {
 						list = t.get(EXCLUDE_INTERFACE);
-					} else if (item.startsWith(EXCLUDE_CLASS + ":")) {
+					} else if (StringUtils.startsWith(item, EXCLUDE_CLASS + ":")) {
 						list = t.get(EXCLUDE_CLASS);
-					} else if (item.startsWith(EXCLUDE_SUPERCLASS)) {
+					} else if (StringUtils.startsWith(item, EXCLUDE_SUPERCLASS)) {
 						list = t.get(EXCLUDE_SUPERCLASS);
 					}
 					// add to list
-					list.add(item.substring(item.indexOf(":") + 1));
+					list.add(StringUtils.substring(item, StringUtils.indexOf(item, ":") + 1));
 				}
 			}
 		} catch (Exception e) {
@@ -405,8 +404,8 @@ public class GenericPropertiesCreator {
 		/*
 		 * if (!ClassLoader.getSystemClassLoader().equals(this.getClass().
 		 * getClassLoader ())) { if
-		 * (Boolean.parseBoolean(getInputProperties().getProperty(USE_DYNAMIC,
-		 * "true")) == true) { System.out.println(
+		 * (Boolean.parseBoolean(getInputProperties().getProperty(USE_DYNAMIC, "true"))
+		 * == true) { System.out.println(
 		 * "[GenericPropertiesCreator] classloader in use is not the system " +
 		 * "classloader: using static entries in weka/gui/GenericObjectEditor.props rather "
 		 * + "than dynamic class discovery."); } return false; }
@@ -423,12 +422,12 @@ public class GenericPropertiesCreator {
 	 * @return whether the classname is a valid one
 	 */
 	protected boolean isValidClassname(String classname) {
-		return (classname.indexOf("$") == -1);
+		return (!StringUtils.contains(classname, "$"));
 	}
 
 	/**
-	 * Checks whether the classname is a valid one for the given key. This is
-	 * based on the settings in the Exclude file.
+	 * Checks whether the classname is a valid one for the given key. This is based
+	 * on the settings in the Exclude file.
 	 * 
 	 * @param key
 	 *            the property key
@@ -511,8 +510,8 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * fills in all the classes (based on the packages in the input properties
-	 * file) into the output properties file
+	 * fills in all the classes (based on the packages in the input properties file)
+	 * into the output properties file
 	 * 
 	 * @throws Exception
 	 *             if something goes wrong
@@ -540,7 +539,7 @@ public class GenericPropertiesCreator {
 
 			// get classes for all packages
 			while (tok.hasMoreTokens()) {
-				pkg = tok.nextToken().trim();
+				pkg = StringUtils.trim(tok.nextToken());
 
 				try {
 					classes = ClassDiscovery.find(Class.class, pkg);
@@ -621,14 +620,13 @@ public class GenericPropertiesCreator {
 	}
 
 	/**
-	 * generates the props-file for the GenericObjectEditor and stores it only
-	 * if the the param <code>store</code> is TRUE. If it is FALSE then the
-	 * generated properties file can be retrieved via the
-	 * <code>getOutputProperties</code> method.
+	 * generates the props-file for the GenericObjectEditor and stores it only if
+	 * the the param <code>store</code> is TRUE. If it is FALSE then the generated
+	 * properties file can be retrieved via the <code>getOutputProperties</code>
+	 * method.
 	 * 
 	 * @param store
-	 *            if TRUE then the properties file is stored to the stored
-	 *            filename
+	 *            if TRUE then the properties file is stored to the stored filename
 	 * @param loadInputProps
 	 *            true if the input properties should be loaded
 	 * @throws Exception

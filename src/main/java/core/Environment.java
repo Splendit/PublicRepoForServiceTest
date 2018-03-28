@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class encapsulates a map of all environment and java system properties.
@@ -45,17 +46,17 @@ public class Environment implements RevisionHandler {
 	private static final Map<String, String> mEnvVars = new TreeMap<>();
 
 	/**
-	 * Constructs a new Environment object with all environment variables and
-	 * java properties set.
+	 * Constructs a new Environment object with all environment variables and java
+	 * properties set.
 	 */
 	public Environment() {
 		// get the env variables first
 		Map<String, String> env = System.getenv();
 		Set<String> keys = env.keySet();
-		for (String kv : keys) {
+		keys.forEach(kv -> {
 			String value = env.get(kv);
 			mEnvVars.put(kv, value);
-		}
+		});
 
 		// get the java properties
 		Properties jvmProps = System.getProperties();
@@ -69,8 +70,8 @@ public class Environment implements RevisionHandler {
 	}
 
 	/**
-	 * Constructor that makes a new Environment object containing all the
-	 * entries in the supplied one
+	 * Constructor that makes a new Environment object containing all the entries in
+	 * the supplied one
 	 *
 	 * @param other
 	 *            the Environment object to copy to this one
@@ -80,8 +81,8 @@ public class Environment implements RevisionHandler {
 	}
 
 	/**
-	 * Get the singleton system-wide (visible to every class in the running VM)
-	 * set of environment variables.
+	 * Get the singleton system-wide (visible to every class in the running VM) set
+	 * of environment variables.
 	 * 
 	 * @return the system-wide set of environment variables.
 	 */
@@ -97,7 +98,7 @@ public class Environment implements RevisionHandler {
 	 * @return true if the argument contains one or more environment variables
 	 */
 	public static boolean containsEnvVariables(String source) {
-		return (source.indexOf("${") >= 0);
+		return (StringUtils.contains(source, "${"));
 	}
 
 	/**
@@ -111,13 +112,13 @@ public class Environment implements RevisionHandler {
 	 */
 	public String substitute(String source) throws Exception {
 		// Grab each variable out of the string
-		int index = source.indexOf("${");
+		int index = StringUtils.indexOf(source, "${");
 
 		while (index >= 0) {
 			index += 2;
-			int endIndex = source.indexOf('}');
+			int endIndex = StringUtils.indexOf(source, '}');
 			if (endIndex >= 0 && endIndex > index + 1) {
-				String key = source.substring(index, endIndex);
+				String key = StringUtils.substring(source, index, endIndex);
 
 				// look this sucker up
 				String replace = mEnvVars.get(key);
@@ -130,7 +131,7 @@ public class Environment implements RevisionHandler {
 			} else {
 				break;
 			}
-			index = source.indexOf("${");
+			index = StringUtils.indexOf(source, "${");
 		}
 		return source;
 	}
@@ -190,8 +191,8 @@ public class Environment implements RevisionHandler {
 	 * 
 	 * @param key
 	 *            the name of the variable to get
-	 * @return the associated value or null if this variable is not in the
-	 *         internal map
+	 * @return the associated value or null if this variable is not in the internal
+	 *         map
 	 */
 	public String getVariableValue(String key) {
 		return mEnvVars.get(key);

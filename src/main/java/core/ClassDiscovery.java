@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class is used for discovering classes that implement a certain interface
@@ -49,8 +50,7 @@ public class ClassDiscovery implements RevisionHandler {
 	public final static boolean VERBOSE = false;
 
 	/**
-	 * for caching queries (classname+packagename &lt;-&gt; Vector with
-	 * classnames).
+	 * for caching queries (classname+packagename &lt;-&gt; Vector with classnames).
 	 */
 	protected static Hashtable<String, Vector<String>> m_Cache;
 
@@ -176,8 +176,8 @@ public class ClassDiscovery implements RevisionHandler {
 	}
 
 	/**
-	 * If the given package can be found in this part of the classpath then an
-	 * URL object is returned, otherwise <code>null</code>.
+	 * If the given package can be found in this part of the classpath then an URL
+	 * object is returned, otherwise <code>null</code>.
 	 * 
 	 * @param classpathPart
 	 *            the part of the classpath to look for the package
@@ -211,9 +211,9 @@ public class ClassDiscovery implements RevisionHandler {
 				// is package actually included in jar?
 				jarfile = new JarFile(classpathPart);
 				enm = jarfile.entries();
-				pkgnameTmp = pkgname.substring(1); // remove the leading "/"
+				pkgnameTmp = StringUtils.substring(pkgname, 1); // remove the leading "/"
 				while (enm.hasMoreElements()) {
-					if (enm.nextElement().toString().startsWith(pkgnameTmp)) {
+					if (StringUtils.startsWith(enm.nextElement().toString(), pkgnameTmp)) {
 						urlStr = "jar:file:" + classpathPart + "!" + pkgname;
 						break;
 					}
@@ -238,9 +238,8 @@ public class ClassDiscovery implements RevisionHandler {
 	}
 
 	/**
-	 * Checks the given packages for classes that inherited from the given
-	 * class, in case it's a class, or implement this class, in case it's an
-	 * interface.
+	 * Checks the given packages for classes that inherited from the given class, in
+	 * case it's a class, or implement this class, in case it's an interface.
 	 * 
 	 * @param classname
 	 *            the class/interface to look for
@@ -266,8 +265,8 @@ public class ClassDiscovery implements RevisionHandler {
 	}
 
 	/**
-	 * Checks the given package for classes that inherited from the given class,
-	 * in case it's a class, or implement this class, in case it's an interface.
+	 * Checks the given package for classes that inherited from the given class, in
+	 * case it's a class, or implement this class, in case it's an interface.
 	 * 
 	 * @param classname
 	 *            the class/interface to look for
@@ -293,9 +292,8 @@ public class ClassDiscovery implements RevisionHandler {
 	}
 
 	/**
-	 * Checks the given packages for classes that inherited from the given
-	 * class, in case it's a class, or implement this class, in case it's an
-	 * interface.
+	 * Checks the given packages for classes that inherited from the given class, in
+	 * case it's a class, or implement this class, in case it's an interface.
 	 * 
 	 * @param cls
 	 *            the class/interface to look for
@@ -333,8 +331,8 @@ public class ClassDiscovery implements RevisionHandler {
 	}
 
 	/**
-	 * Checks the given package for classes that inherited from the given class,
-	 * in case it's a class, or implement this class, in case it's an interface.
+	 * Checks the given package for classes that inherited from the given class, in
+	 * case it's a class, or implement this class, in case it's an interface.
 	 * 
 	 * @param cls
 	 *            the class/interface to look for
@@ -417,7 +415,7 @@ public class ClassDiscovery implements RevisionHandler {
 		// add directory to the list
 		if (prefix == null) {
 			newPrefix = "";
-		} else if (prefix.length() == 0) {
+		} else if (prefix.isEmpty()) {
 			newPrefix = dir.getName();
 		} else {
 			newPrefix = prefix + "." + dir.getName();
@@ -536,8 +534,7 @@ public class ClassDiscovery implements RevisionHandler {
 	 * <ul>
 	 * <li>weka.core.ClassDiscovery &lt;packages&gt;<br/>
 	 * Prints all the packages in the current classpath</li>
-	 * <li>weka.core.ClassDiscovery &lt;classname&gt;
-	 * &lt;packagename(s)&gt;<br/>
+	 * <li>weka.core.ClassDiscovery &lt;classname&gt; &lt;packagename(s)&gt;<br/>
 	 * Prints the classes it found.</li>
 	 * </ul>
 	 * 
@@ -552,9 +549,7 @@ public class ClassDiscovery implements RevisionHandler {
 
 		if ((args.length == 1) && ("packages".equals(args[0]))) {
 			list = findPackages();
-			for (String iterator : list) {
-				System.out.println(iterator);
-			}
+			list.forEach(System.out::println);
 		} else if (args.length == 2) {
 			// packages
 			packages = new Vector<>();
@@ -612,8 +607,7 @@ public class ClassDiscovery implements RevisionHandler {
 		}
 
 		/**
-		 * returns the group of the character: 0=special char, 1=number,
-		 * 2=letter.
+		 * returns the group of the character: 0=special char, 1=number, 2=letter.
 		 * 
 		 * @param c
 		 *            the character to check
@@ -654,8 +648,8 @@ public class ClassDiscovery implements RevisionHandler {
 			result = 0; // they're equal
 
 			// get lower case string
-			s1 = o1.toLowerCase();
-			s2 = o2.toLowerCase();
+			s1 = StringUtils.lowerCase(o1);
+			s2 = StringUtils.lowerCase(o2);
 
 			// same length
 			s1 = fillUp(s1, s2.length());

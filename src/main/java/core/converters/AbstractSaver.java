@@ -216,8 +216,8 @@ public abstract class AbstractSaver implements Saver, CapabilitiesHandler, Capab
 	}
 
 	/**
-	 * Returns the Capabilities of this saver. Derived savers have to override
-	 * this method to enable capabilities.
+	 * Returns the Capabilities of this saver. Derived savers have to override this
+	 * method to enable capabilities.
 	 * 
 	 * @return the capabilities of this object
 	 * @see Capabilities
@@ -232,8 +232,8 @@ public abstract class AbstractSaver implements Saver, CapabilitiesHandler, Capab
 	}
 
 	/**
-	 * Sets the strcuture of the instances for the first step of incremental
-	 * saving. The instances only need to have a header.
+	 * Sets the strcuture of the instances for the first step of incremental saving.
+	 * The instances only need to have a header.
 	 * 
 	 * @param headerInfo
 	 *            an instances object.
@@ -270,15 +270,15 @@ public abstract class AbstractSaver implements Saver, CapabilitiesHandler, Capab
 	}
 
 	/**
-	 * Method for incremental saving. Standard behaviour: no incremental saving
-	 * is possible, therefore throw an IOException. An incremental saving
-	 * process is stopped by calling this method with null.
+	 * Method for incremental saving. Standard behaviour: no incremental saving is
+	 * possible, therefore throw an IOException. An incremental saving process is
+	 * stopped by calling this method with null.
 	 * 
 	 * @param i
 	 *            the instance to be saved
 	 * @throws IOException
-	 *             IOEXception if the instance acnnot be written to the
-	 *             specified destination
+	 *             IOEXception if the instance acnnot be written to the specified
+	 *             destination
 	 */
 	@Override
 	public void writeIncremental(Instance i) throws IOException {

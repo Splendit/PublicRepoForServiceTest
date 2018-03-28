@@ -60,11 +60,10 @@ public class PropertyDialog extends JDialog {
 	 *            initial x coord for the frame
 	 * @param y
 	 *            initial y coord for the frame
-	 * @deprecated instead of this constructor, one should use the constructors
-	 *             with an explicit owner (either derived from
-	 *             <code>java.awt.Dialog</code> or from
-	 *             <code>java.awt.Frame</code>) or, if none available, using
-	 *             <code>(Frame) null</code> as owner.
+	 * @deprecated instead of this constructor, one should use the constructors with
+	 *             an explicit owner (either derived from
+	 *             <code>java.awt.Dialog</code> or from <code>java.awt.Frame</code>)
+	 *             or, if none available, using <code>(Frame) null</code> as owner.
 	 */
 	public PropertyDialog(PropertyEditor pe, int x, int y) {
 		this((Frame) null, pe, x, y);
@@ -85,8 +84,8 @@ public class PropertyDialog extends JDialog {
 	}
 
 	/**
-	 * Creates the editor dialog at the given position. The dialog is
-	 * automatically modal in case the owner is non-null.
+	 * Creates the editor dialog at the given position. The dialog is automatically
+	 * modal in case the owner is non-null.
 	 *
 	 * @param owner
 	 *            the dialog that opens this dialog
@@ -116,8 +115,8 @@ public class PropertyDialog extends JDialog {
 	}
 
 	/**
-	 * Creates the editor dialog at the given position. The dialog is
-	 * automatically modal in case the owner is non-null.
+	 * Creates the editor dialog at the given position. The dialog is automatically
+	 * modal in case the owner is non-null.
 	 *
 	 * @param owner
 	 *            the frame that opens this dialog

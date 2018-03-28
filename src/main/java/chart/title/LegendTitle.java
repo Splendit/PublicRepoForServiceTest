@@ -95,6 +95,7 @@ import chart.ui.RectangleInsets;
 import chart.ui.Size2D;
 import chart.util.PublicCloneable;
 import chart.util.SerialUtils;
+import java.util.Collections;
 
 /**
  * A chart title that displays a legend for the data in the chart.
@@ -103,7 +104,7 @@ import chart.util.SerialUtils;
  * reference to the plot, in which case the legend items will be automatically
  * created to match the dataset(s).
  */
-public class LegendTitle extends Title implements Cloneable, PublicCloneable, Serializable {
+public class LegendTitle extends Title implements PublicCloneable {
 
 	/** For serialization. */
 	private static final long serialVersionUID = 2644010518533854633L;
@@ -115,13 +116,8 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	public static final Paint DEFAULT_ITEM_PAINT = Color.BLACK;
 
 	/** List of default parameters. */
-	private static final List<String> parameters = new ArrayList<String>(Arrays.asList(
-			"font",
-			"color",
-			"backgroundPaint",
-			"hLayout",
-			"vLayout"
-			));
+	private static final List<String> parameters = Collections
+			.unmodifiableList(new ArrayList<>(Arrays.asList("font", "color", "backgroundPaint", "hLayout", "vLayout")));
 
 	/** The background paint (possibly <code>null</code>). */
 	private transient Paint backgroundPaint;
@@ -147,14 +143,14 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	private BlockContainer items;
 
 	/**
-	 * The layout for the legend when it is positioned at the top or bottom of
-	 * the chart.
+	 * The layout for the legend when it is positioned at the top or bottom of the
+	 * chart.
 	 */
 	private Arrangement hLayout;
 
 	/**
-	 * The layout for the legend when it is positioned at the left or right of
-	 * the chart.
+	 * The layout for the legend when it is positioned at the left or right of the
+	 * chart.
 	 */
 	private Arrangement vLayout;
 
@@ -177,11 +173,9 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	 * @param source
 	 *            the source.
 	 * @param hLayout
-	 *            the horizontal item arrangement (<code>null</code> not
-	 *            permitted).
+	 *            the horizontal item arrangement (<code>null</code> not permitted).
 	 * @param vLayout
-	 *            the vertical item arrangement (<code>null</code> not
-	 *            permitted).
+	 *            the vertical item arrangement (<code>null</code> not permitted).
 	 */
 	public LegendTitle(Arrangement hLayout, Arrangement vLayout) {
 		this.items = new BlockContainer(hLayout);
@@ -206,8 +200,8 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	}
 
 	/**
-	 * Sets the background paint for the legend and sends a
-	 * {@link TitleChangeEvent} to all registered listeners.
+	 * Sets the background paint for the legend and sends a {@link TitleChangeEvent}
+	 * to all registered listeners.
 	 *
 	 * @param paint
 	 *            the paint (<code>null</code> permitted).
@@ -250,8 +244,8 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	}
 
 	/**
-	 * Sets the padding that will be applied to each item graphic in the legend
-	 * and sends a {@link TitleChangeEvent} to all registered listeners.
+	 * Sets the padding that will be applied to each item graphic in the legend and
+	 * sends a {@link TitleChangeEvent} to all registered listeners.
 	 *
 	 * @param padding
 	 *            the padding (<code>null</code> not permitted).
@@ -406,9 +400,9 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 		if (textPaint == null) {
 			textPaint = this.itemPaint;
 		}
-		
+
 		result = new BlockContainer(null);
-		
+
 		return result;
 	}
 
@@ -422,8 +416,8 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 	}
 
 	/**
-	 * Arranges the contents of the block, within the given constraints, and
-	 * returns the block size.
+	 * Arranges the contents of the block, within the given constraints, and returns
+	 * the block size.
 	 *
 	 * @param g2
 	 *            the graphics device.
@@ -563,7 +557,7 @@ public class LegendTitle extends Title implements Cloneable, PublicCloneable, Se
 		if (!this.vLayout.equals(that.vLayout)) {
 			return false;
 		}
-		if (!this.sortOrder.equals(that.sortOrder)) {
+		if (this.sortOrder != that.sortOrder) {
 			return false;
 		}
 		return true;

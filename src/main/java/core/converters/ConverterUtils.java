@@ -42,6 +42,7 @@ import core.RevisionHandler;
 import core.RevisionUtils;
 import gui.GenericObjectEditor;
 import gui.GenericPropertiesCreator;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Utility routines for the converter package.
@@ -158,9 +159,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * returns a hashtable with the association "file extension &lt;-&gt;
-	 * converter classname" for the comma-separated list of converter
-	 * classnames.
+	 * returns a hashtable with the association "file extension &lt;-&gt; converter
+	 * classname" for the comma-separated list of converter classnames.
 	 * 
 	 * @param classnames
 	 *            comma-separated list of converter classnames
@@ -181,8 +181,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * returns a hashtable with the association "file extension &lt;-&gt;
-	 * converter classname" for the list of converter classnames.
+	 * returns a hashtable with the association "file extension &lt;-&gt; converter
+	 * classname" for the list of converter classnames.
 	 * 
 	 * @param classnames
 	 *            list of converter classnames
@@ -303,8 +303,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the converter to use for this kind of file, returns
-	 * null if none can be found in the given hashtable.
+	 * tries to determine the converter to use for this kind of file, returns null
+	 * if none can be found in the given hashtable.
 	 * 
 	 * @param filename
 	 *            the file to return a converter for
@@ -321,12 +321,12 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 
 		index = filename.lastIndexOf('.');
 		if (index > -1) {
-			extension = filename.substring(index).toLowerCase();
+			extension = StringUtils.lowerCase(filename.substring(index));
 			result = getConverterForExtension(extension, ht);
 			// is it a compressed format?
-			if (extension.equals(".gz") && result == null) {
+			if (".gz".equals(extension) && result == null) {
 				index = filename.lastIndexOf('.', index - 1);
-				extension = filename.substring(index).toLowerCase();
+				extension = StringUtils.lowerCase(filename.substring(index));
 				result = getConverterForExtension(extension, ht);
 			}
 		}
@@ -335,8 +335,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the loader to use for this kind of extension, returns
-	 * null if none can be found.
+	 * tries to determine the loader to use for this kind of extension, returns null
+	 * if none can be found.
 	 * 
 	 * @param extension
 	 *            the file extension to return a converter for
@@ -390,8 +390,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the loader to use for this kind of file, returns null
-	 * if none can be found.
+	 * tries to determine the loader to use for this kind of file, returns null if
+	 * none can be found.
 	 * 
 	 * @param filename
 	 *            the file to return a converter for
@@ -402,8 +402,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the loader to use for this kind of file, returns null
-	 * if none can be found.
+	 * tries to determine the loader to use for this kind of file, returns null if
+	 * none can be found.
 	 * 
 	 * @param file
 	 *            the file to return a converter for
@@ -414,8 +414,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the loader to use for this kind of extension, returns
-	 * null if none can be found.
+	 * tries to determine the loader to use for this kind of extension, returns null
+	 * if none can be found.
 	 * 
 	 * @param extension
 	 *            the file extension to return a converter for
@@ -435,8 +435,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the URL loader to use for this kind of file, returns
-	 * null if none can be found.
+	 * tries to determine the URL loader to use for this kind of file, returns null
+	 * if none can be found.
 	 * 
 	 * @param filename
 	 *            the file to return a URL converter for
@@ -447,8 +447,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the URL loader to use for this kind of file, returns
-	 * null if none can be found.
+	 * tries to determine the URL loader to use for this kind of file, returns null
+	 * if none can be found.
 	 * 
 	 * @param file
 	 *            the file to return a URL converter for
@@ -459,8 +459,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the URL loader to use for this kind of extension,
-	 * returns null if none can be found.
+	 * tries to determine the URL loader to use for this kind of extension, returns
+	 * null if none can be found.
 	 * 
 	 * @param extension
 	 *            the file extension to return a URL converter for
@@ -498,8 +498,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the saver to use for this kind of file, returns null
-	 * if none can be found.
+	 * tries to determine the saver to use for this kind of file, returns null if
+	 * none can be found.
 	 * 
 	 * @param filename
 	 *            the file to return a converter for
@@ -510,8 +510,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the saver to use for this kind of file, returns null
-	 * if none can be found.
+	 * tries to determine the saver to use for this kind of file, returns null if
+	 * none can be found.
 	 * 
 	 * @param file
 	 *            the file to return a converter for
@@ -522,8 +522,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * tries to determine the saver to use for this kind of extension, returns
-	 * null if none can be found.
+	 * tries to determine the saver to use for this kind of extension, returns null
+	 * if none can be found.
 	 * 
 	 * @param extension
 	 *            the file extension to return a converter for
@@ -545,14 +545,13 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 
 	/**
 	 * Helper class for loading data from files and URLs. Via the ConverterUtils
-	 * class it determines which converter to use for loading the data into
-	 * memory. If the chosen converter is an incremental one, then the data will
-	 * be loaded incrementally, otherwise as batch. In both cases the same
-	 * interface will be used (<code>hasMoreElements</code>,
-	 * <code>nextElement</code>). Before the data can be read again, one has to
-	 * call the <code>reset</code> method. The data source can also be
-	 * initialized with an Instances object, in order to provide a unified
-	 * interface to files and already loaded datasets.
+	 * class it determines which converter to use for loading the data into memory.
+	 * If the chosen converter is an incremental one, then the data will be loaded
+	 * incrementally, otherwise as batch. In both cases the same interface will be
+	 * used (<code>hasMoreElements</code>, <code>nextElement</code>). Before the
+	 * data can be read again, one has to call the <code>reset</code> method. The
+	 * data source can also be initialized with an Instances object, in order to
+	 * provide a unified interface to files and already loaded datasets.
 	 * 
 	 * @author FracPete (fracpete at waikato dot ac dot nz)
 	 * @version $Revision$
@@ -588,8 +587,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		protected Instances m_BatchBuffer;
 
 		/**
-		 * Tries to load the data from the file. Can be either a regular file or
-		 * a web location (http://, https://, ftp:// or file://).
+		 * Tries to load the data from the file. Can be either a regular file or a web
+		 * location (http://, https://, ftp:// or file://).
 		 * 
 		 * @param location
 		 *            the name of the file to load
@@ -600,8 +599,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 			super();
 
 			// file or URL?
-			if (location.startsWith("http://") || location.startsWith("https://") || location.startsWith("ftp://")
-					|| location.startsWith("file://")) {
+			if (StringUtils.startsWith(location, "http://") || StringUtils.startsWith(location, "https://")
+					|| StringUtils.startsWith(location, "ftp://") || StringUtils.startsWith(location, "file://")) {
 				m_URL = new URL(location);
 			} else {
 				m_File = new File(location);
@@ -664,8 +663,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * Initializes the datasource with the given input stream. This stream
-		 * is always interpreted as ARFF.
+		 * Initializes the datasource with the given input stream. This stream is always
+		 * interpreted as ARFF.
 		 * 
 		 * @param stream
 		 *            the stream to use
@@ -688,8 +687,7 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * initializes the batch buffer if necessary, i.e., for non-incremental
-		 * loaders.
+		 * initializes the batch buffer if necessary, i.e., for non-incremental loaders.
 		 */
 		protected void initBatchBuffer() {
 			try {
@@ -704,16 +702,17 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * returns whether the extension of the location is likely to be of ARFF
-		 * format, i.e., ending in ".arff" or ".arff.gz" (case-insensitive).
+		 * returns whether the extension of the location is likely to be of ARFF format,
+		 * i.e., ending in ".arff" or ".arff.gz" (case-insensitive).
 		 * 
 		 * @param location
 		 *            the file location to check
 		 * @return true if the location seems to be of ARFF format
 		 */
 		public static boolean isArff(String location) {
-			if (location.toLowerCase().endsWith(ArffLoader.FILE_EXTENSION.toLowerCase())
-					|| location.toLowerCase().endsWith(ArffLoader.FILE_EXTENSION_COMPRESSED.toLowerCase())) {
+			if (StringUtils.endsWith(location.toLowerCase(), StringUtils.lowerCase(ArffLoader.FILE_EXTENSION))
+					|| StringUtils.endsWith(location.toLowerCase(),
+							StringUtils.lowerCase(ArffLoader.FILE_EXTENSION_COMPRESSED))) {
 				return true;
 			} else {
 				return false;
@@ -730,8 +729,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * returns the determined loader, null if the DataSource was initialized
-		 * with data alone and not a file/URL.
+		 * returns the determined loader, null if the DataSource was initialized with
+		 * data alone and not a file/URL.
 		 * 
 		 * @return the loader used for retrieving the data
 		 */
@@ -769,8 +768,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * returns the full dataset with the specified class index set, can be
-		 * null in case of an error.
+		 * returns the full dataset with the specified class index set, can be null in
+		 * case of an error.
 		 * 
 		 * @param classIndex
 		 *            the class index for the dataset
@@ -944,8 +943,7 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * convencience method for loading a dataset in batch mode from a
-		 * stream.
+		 * convencience method for loading a dataset in batch mode from a stream.
 		 * 
 		 * @param stream
 		 *            the stream to load the dataset from
@@ -992,14 +990,14 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		 */
 		public static void main(String[] args) throws Exception {
 			if (args.length != 1) {
-				System.out.println(String.format("\nUsage: %s <file>\n", DataSource.class.getName()));
+				System.out.println(String.format("%nUsage: %s <file>%n", DataSource.class.getName()));
 				System.exit(1);
 			}
 
 			DataSource loader = new DataSource(args[0]);
 
-			System.out.println(String.format("Incremental? %b \n",loader.isIncremental()));
-			System.out.println(String.format("Loader: %s \r\n", loader.getLoader().getClass().getName()));
+			System.out.println(String.format("Incremental? %b %n", loader.isIncremental()));
+			System.out.println(String.format("Loader: %s %n", loader.getLoader().getClass().getName()));
 			System.out.println("Data:\n");
 			Instances structure = loader.getStructure();
 			System.out.println(structure);
@@ -1068,8 +1066,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * initializes the sink to save the data to the given Saver (expected to
-		 * be fully configured).
+		 * initializes the sink to save the data to the given Saver (expected to be
+		 * fully configured).
 		 * 
 		 * @param saver
 		 *            the saver to use for saving the data
@@ -1080,12 +1078,10 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * initializes the sink to save the data in the stream (always in ARFF
-		 * format).
+		 * initializes the sink to save the data in the stream (always in ARFF format).
 		 * 
 		 * @param stream
-		 *            the output stream to use for storing the data in ARFF
-		 *            format
+		 *            the output stream to use for storing the data in ARFF format
 		 */
 		public DataSink(OutputStream stream) {
 			m_Saver = null;
@@ -1093,9 +1089,9 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * writes the given data either via the saver or to the defined output
-		 * stream (depending on the constructor). In case of the stream, the
-		 * stream is only flushed, but not closed.
+		 * writes the given data either via the saver or to the defined output stream
+		 * (depending on the constructor). In case of the stream, the stream is only
+		 * flushed, but not closed.
 		 * 
 		 * @param data
 		 *            the data to save
@@ -1164,8 +1160,7 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		}
 
 		/**
-		 * for testing only - takes a data file as input and a data file for the
-		 * output.
+		 * for testing only - takes a data file as input and a data file for the output.
 		 * 
 		 * @param args
 		 *            the commandline arguments

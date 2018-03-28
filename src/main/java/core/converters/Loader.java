@@ -55,8 +55,8 @@ public interface Loader extends Serializable, RevisionHandler {
 
 	/**
 	 * Resets the Loader object ready to begin loading. If there is an existing
-	 * source, implementations should attempt to reset in such a fashion as to
-	 * be able to load from the beginning of the source.
+	 * source, implementations should attempt to reset in such a fashion as to be
+	 * able to load from the beginning of the source.
 	 * 
 	 * @throws Exception
 	 *             if Loader can't be reset for some reason.
@@ -102,8 +102,8 @@ public interface Loader extends Serializable, RevisionHandler {
 	void setSource(InputStream input) throws IOException;
 
 	/**
-	 * Determines and returns (if possible) the structure (internally the
-	 * header) of the data set as an empty set of instances.
+	 * Determines and returns (if possible) the structure (internally the header) of
+	 * the data set as an empty set of instances.
 	 * 
 	 * @return the structure of the data set as an empty set of Instances
 	 * @throws IOException
@@ -130,15 +130,15 @@ public interface Loader extends Serializable, RevisionHandler {
 	Instances getStructure() throws IOException;
 
 	/**
-	 * Return the full data set. If the structure hasn't yet been determined by
-	 * a call to getStructure then the method should do so before processing the
-	 * rest of the data set.
+	 * Return the full data set. If the structure hasn't yet been determined by a
+	 * call to getStructure then the method should do so before processing the rest
+	 * of the data set.
 	 * 
 	 * @return the full data set as an Instances object
 	 * @throws IOException
 	 *             if there is an error during parsing or if getNextInstance has
-	 *             been called on this source (either incremental or batch
-	 *             loading can be used, not both).
+	 *             been called on this source (either incremental or batch loading
+	 *             can be used, not both).
 	 * 
 	 *             <pre>
 	 * <jml>
@@ -160,31 +160,30 @@ public interface Loader extends Serializable, RevisionHandler {
 	Instances getDataSet() throws IOException;
 
 	/**
-	 * Read the data set incrementally---get the next instance in the data set
-	 * or returns null if there are no more instances to get. If the structure
-	 * hasn't yet been determined by a call to getStructure then method should
-	 * do so before returning the next instance in the data set.
+	 * Read the data set incrementally---get the next instance in the data set or
+	 * returns null if there are no more instances to get. If the structure hasn't
+	 * yet been determined by a call to getStructure then method should do so before
+	 * returning the next instance in the data set.
 	 * 
-	 * If it is not possible to read the data set incrementally (ie. in cases
-	 * where the data set structure cannot be fully established before all
-	 * instances have been seen) then an exception should be thrown.
+	 * If it is not possible to read the data set incrementally (ie. in cases where
+	 * the data set structure cannot be fully established before all instances have
+	 * been seen) then an exception should be thrown.
 	 * 
 	 * @param structure
-	 *            the dataset header information, will get updated in case of
-	 *            string or relational attributes
-	 * @return the next instance in the data set as an Instance object or null
-	 *         if there are no more instances to be read
+	 *            the dataset header information, will get updated in case of string
+	 *            or relational attributes
+	 * @return the next instance in the data set as an Instance object or null if
+	 *         there are no more instances to be read
 	 * @throws IOException
 	 *             if there is an error during parsing or if getDataSet has been
-	 *             called on this source (either incremental or batch loading
-	 *             can be used, not both).
+	 *             called on this source (either incremental or batch loading can be
+	 *             used, not both).
 	 */
 	Instance getNextInstance(Instances structure) throws IOException;
 
 	/**
-	 * Exception that implementers can throw from getStructure() when they have
-	 * not been configured sufficiently in order to read the structure (or
-	 * data).
+	 * Exception that implementers can throw from getStructure() when they have not
+	 * been configured sufficiently in order to read the structure (or data).
 	 * 
 	 * @author Mark Hall (mhall{[at]}pentaho{[dot]}com)
 	 */

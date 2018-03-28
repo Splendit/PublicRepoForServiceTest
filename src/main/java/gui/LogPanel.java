@@ -103,29 +103,27 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 	 * @param tm
 	 *            the task monitor, or null for none
 	 * @param logHidden
-	 *            true if the log should be hidden and acessible via a button,
-	 *            or false if the log should always be visible.
+	 *            true if the log should be hidden and acessible via a button, or
+	 *            false if the log should always be visible.
 	 */
 	public LogPanel(WekaTaskMonitor tm, boolean logHidden) {
 		this(tm, logHidden, false, true);
 	}
 
 	/**
-	 * Creates the log panel, possibly with task monitor, where the either the
-	 * log is optionally hidden or the status (having both hidden is not
-	 * allowed).
+	 * Creates the log panel, possibly with task monitor, where the either the log
+	 * is optionally hidden or the status (having both hidden is not allowed).
 	 * 
 	 *
 	 * @param tm
 	 *            the task monitor, or null for none
 	 * @param logHidden
-	 *            true if the log should be hidden and acessible via a button,
-	 *            or false if the log should always be visible.
+	 *            true if the log should be hidden and acessible via a button, or
+	 *            false if the log should always be visible.
 	 * @param statusHidden
 	 *            true if the status bar should be hidden (i.e.
 	 * @param titledBorder
-	 *            true if the log should have a title you only want the log
-	 *            part).
+	 *            true if the log should have a title you only want the log part).
 	 */
 	public LogPanel(WekaTaskMonitor tm, boolean logHidden, boolean statusHidden, boolean titledBorder) {
 
@@ -169,12 +167,7 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 			jf.setSize(450, 350);
 
 			// display log window on request
-			m_logButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					jf.setVisible(true);
-				}
-			});
+			m_logButton.addActionListener((ActionEvent e) -> jf.setVisible(true));
 
 			// do layout
 			setLayout(new BorderLayout());
@@ -281,29 +274,23 @@ public class LogPanel extends JPanel implements Logger, TaskLogger {
 				if (((e.getModifiers() & InputEvent.BUTTON1_MASK) != InputEvent.BUTTON1_MASK) || e.isAltDown()) {
 					JPopupMenu gcMenu = new JPopupMenu();
 					JMenuItem availMem = new JMenuItem("Memory information");
-					availMem.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent ee) {
-							System.gc();
-							Runtime currR = Runtime.getRuntime();
-							long freeM = currR.freeMemory();
-							long totalM = currR.totalMemory();
-							long maxM = currR.maxMemory();
-							logMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / "
-									+ printLong(totalM) + " / " + printLong(maxM));
-							statusMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / "
-									+ printLong(totalM) + " / " + printLong(maxM));
-						}
+					availMem.addActionListener((ActionEvent ee) -> {
+						System.gc();
+						Runtime currR = Runtime.getRuntime();
+						long freeM = currR.freeMemory();
+						long totalM = currR.totalMemory();
+						long maxM = currR.maxMemory();
+						logMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / " + printLong(totalM)
+								+ " / " + printLong(maxM));
+						statusMessage("Memory (free/total/max.) in bytes: " + printLong(freeM) + " / "
+								+ printLong(totalM) + " / " + printLong(maxM));
 					});
 					gcMenu.add(availMem);
 					JMenuItem runGC = new JMenuItem("Run garbage collector");
-					runGC.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent ee) {
-							statusMessage("Running garbage collector");
-							System.gc();
-							statusMessage("OK");
-						}
+					runGC.addActionListener((ActionEvent ee) -> {
+						statusMessage("Running garbage collector");
+						System.gc();
+						statusMessage("OK");
 					});
 					gcMenu.add(runGC);
 					gcMenu.show(LogPanel.this, e.getX(), e.getY());

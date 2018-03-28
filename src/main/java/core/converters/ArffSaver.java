@@ -38,6 +38,7 @@ import core.Instances;
 import core.Option;
 import core.RevisionUtils;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Writes to a destination in arff text format.
@@ -127,7 +128,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 		}
 
 		result.add("-decimal");
-		result.add(new Integer(getMaxDecimalPlaces()).toString());
+		result.add(Integer.toString(getMaxDecimalPlaces()));
 
 		Collections.addAll(result, super.getOptions());
 
@@ -284,7 +285,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	 */
 	@Override
 	public void setFile(File outputFile) throws IOException {
-		if (outputFile.getAbsolutePath().endsWith(ArffLoader.FILE_EXTENSION_COMPRESSED)) {
+		if (StringUtils.endsWith(outputFile.getAbsolutePath(), ArffLoader.FILE_EXTENSION_COMPRESSED)) {
 			setCompressOutput(true);
 		}
 
@@ -347,8 +348,7 @@ public class ArffSaver extends AbstractFileSaver implements BatchConverter, Incr
 	 * @param inst
 	 *            the instance to save
 	 * @throws IOException
-	 *             throws IOEXception if an instance cannot be saved
-	 *             incrementally.
+	 *             throws IOEXception if an instance cannot be saved incrementally.
 	 */
 	@Override
 	public void writeIncremental(Instance inst) throws IOException {

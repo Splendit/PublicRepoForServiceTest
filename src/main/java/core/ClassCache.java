@@ -36,6 +36,7 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A singleton that stores all classes on the classpath.
@@ -83,14 +84,14 @@ public class ClassCache implements RevisionHandler {
 
 		result = classname;
 
-		if (result.indexOf("/") > -1) {
+		if (StringUtils.contains(result, "/")) {
 			result = result.replace("/", ".");
 		}
-		if (result.indexOf("\\") > -1) {
+		if (StringUtils.contains(result, "\\")) {
 			result = result.replace("\\", ".");
 		}
-		if (result.endsWith(".class")) {
-			result = result.substring(0, result.length() - 6);
+		if (StringUtils.endsWith(result, ".class")) {
+			result = StringUtils.substring(result, 0, result.length() - 6);
 		}
 
 		return result;
@@ -104,8 +105,8 @@ public class ClassCache implements RevisionHandler {
 	 * @return the package name
 	 */
 	public static String extractPackage(String classname) {
-		if (classname.indexOf(".") > -1) {
-			return classname.substring(0, classname.lastIndexOf("."));
+		if (StringUtils.contains(classname, ".")) {
+			return StringUtils.substring(classname, 0, classname.lastIndexOf("."));
 		} else {
 			return DEFAULT_PACKAGE;
 		}
@@ -115,8 +116,8 @@ public class ClassCache implements RevisionHandler {
 	 * Adds the classname to the cache.
 	 * 
 	 * @param classname
-	 *            the classname, automatically removes ".class" and turns "/" or
-	 *            "\" into "."
+	 *            the classname, automatically removes ".class" and turns "/" or "\"
+	 *            into "."
 	 * @return true if adding changed the cache
 	 */
 	public boolean add(String classname) {
@@ -202,8 +203,8 @@ public class ClassCache implements RevisionHandler {
 	}
 
 	/**
-	 * Analyzes the MANIFEST.MF file of a jar whether additional jars are listed
-	 * in the "Class-Path" key.
+	 * Analyzes the MANIFEST.MF file of a jar whether additional jars are listed in
+	 * the "Class-Path" key.
 	 * 
 	 * @param manifest
 	 *            the manifest to analyze
@@ -225,10 +226,10 @@ public class ClassCache implements RevisionHandler {
 
 		parts = cp.split(" ");
 		for (String part : parts) {
-			if (part.trim().length() == 0) {
+			if (StringUtils.trim(part).isEmpty()) {
 				return;
 			}
-			if (part.toLowerCase().endsWith(".jar")) {
+			if (StringUtils.endsWith(part.toLowerCase(), ".jar")) {
 				initFromClasspathPart(part);
 			}
 		}
@@ -259,7 +260,7 @@ public class ClassCache implements RevisionHandler {
 			enm = jar.entries();
 			while (enm.hasMoreElements()) {
 				entry = enm.nextElement();
-				if (entry.getName().endsWith(".class")) {
+				if (StringUtils.endsWith(entry.getName(), ".class")) {
 					add(entry.getName());
 				}
 			}
@@ -303,7 +304,7 @@ public class ClassCache implements RevisionHandler {
 		File file;
 
 		file = null;
-		if (part.startsWith("file:")) {
+		if (StringUtils.startsWith(part, "file:")) {
 			part = part.replace(" ", "%20");
 			try {
 				file = new File(new java.net.URI(part));
@@ -368,7 +369,7 @@ public class ClassCache implements RevisionHandler {
 			names = m_Cache.get(packages.nextElement()).iterator();
 			while (names.hasNext()) {
 				name = names.next();
-				if (name.contains(matchText)) {
+				if (StringUtils.contains(name, matchText)) {
 					result.add(name);
 				}
 			}
@@ -423,7 +424,7 @@ public class ClassCache implements RevisionHandler {
 		 */
 		@Override
 		public boolean accept(File pathname) {
-			return pathname.getName().endsWith(".class");
+			return StringUtils.endsWith(pathname.getName(), ".class");
 		}
 	}
 

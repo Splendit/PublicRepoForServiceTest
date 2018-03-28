@@ -137,8 +137,7 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 	 * @param toolTipText
 	 *            the tool tip text (<code>null</code> permitted).
 	 * @param urlText
-	 *            the URL text for HTML image maps (<code>null</code>
-	 *            permitted).
+	 *            the URL text for HTML image maps (<code>null</code> permitted).
 	 */
 	public ChartEntity(Shape area, String toolTipText, String urlText) {
 		if (area == null) {
@@ -161,9 +160,8 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 	/**
 	 * Sets the area for the entity.
 	 * <P>
-	 * This class conveys information about chart entities back to a client.
-	 * Setting this area doesn't change the entity (which has already been
-	 * drawn).
+	 * This class conveys information about chart entities back to a client. Setting
+	 * this area doesn't change the entity (which has already been drawn).
 	 *
 	 * @param area
 	 *            the area (<code>null</code> not permitted).
@@ -176,15 +174,15 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 	}
 
 	/**
-	 * Returns the tool tip text for the entity. Be aware that this text may
-	 * have been generated from user supplied data, so for security reasons some
-	 * form of filtering should be applied before incorporating this text into
-	 * any HTML output.
+	 * Returns the tool tip text for the entity. Be aware that this text may have
+	 * been generated from user supplied data, so for security reasons some form of
+	 * filtering should be applied before incorporating this text into any HTML
+	 * output.
 	 *
 	 * @return The tool tip text (possibly <code>null</code>).
 	 */
 	public String getToolTipText() {
-		return this.tool_Tip_Text.toString();
+		return this.tool_Tip_Text;
 	}
 
 	/**
@@ -198,14 +196,14 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 	}
 
 	/**
-	 * Returns the URL text for the entity. Be aware that this text may have
-	 * been generated from user supplied data, so some form of filtering should
-	 * be applied before this "URL" is used in any output.
+	 * Returns the URL text for the entity. Be aware that this text may have been
+	 * generated from user supplied data, so some form of filtering should be
+	 * applied before this "URL" is used in any output.
 	 *
 	 * @return The URL text (possibly <code>null</code>).
 	 */
 	public String getURLText() {
-		return this.url_Text.toString();
+		return this.url_Text;
 	}
 
 	/**
@@ -219,8 +217,8 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 	}
 
 	/**
-	 * Returns a string describing the entity area. This string is intended for
-	 * use in an AREA tag when generating an image map.
+	 * Returns a string describing the entity area. This string is intended for use
+	 * in an AREA tag when generating an image map.
 	 *
 	 * @return The shape type (never <code>null</code>).
 	 */
@@ -270,13 +268,12 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 			y2++;
 		}
 		// end fix by rfuller
-		return String.valueOf(x1).concat(",").concat(String.valueOf(y1)).concat(",").concat(String.valueOf(x2))
-				.concat(",").concat(String.valueOf(y2));
+		return String.valueOf(x1) + "," + String.valueOf(y1) + "," + String.valueOf(x2) + "," + String.valueOf(y2);
 	}
 
 	/**
-	 * Returns a string containing the coordinates for a given shape. This
-	 * string is intended for use in an image map.
+	 * Returns a string containing the coordinates for a given shape. This string is
+	 * intended for use in an image map.
 	 *
 	 * @param shape
 	 *            the shape (<code>null</code> not permitted).
@@ -303,8 +300,7 @@ public class ChartEntity implements Cloneable, PublicCloneable, Serializable {
 	}
 
 	/**
-	 * Returns a string representation of the chart entity, useful for
-	 * debugging.
+	 * Returns a string representation of the chart entity, useful for debugging.
 	 *
 	 * @return A string.
 	 */

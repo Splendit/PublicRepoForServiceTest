@@ -43,8 +43,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 
 	/**
 	 * The dataset the instance has access to. Null if the instance doesn't have
-	 * access to any dataset. Only if an instance has access to a dataset, it
-	 * knows about the actual attribute types.
+	 * access to any dataset. Only if an instance has access to a dataset, it knows
+	 * about the actual attribute types.
 	 */
 	protected/* @spec_public@ */Instances m_Dataset;
 
@@ -97,8 +97,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * 
 	 * @return the class attribute
 	 * @throws UnassignedDatasetException
-	 *             if the class is not set or the instance doesn't have access
-	 *             to a dataset
+	 *             if the class is not set or the instance doesn't have access to a
+	 *             dataset
 	 */
 	// @ requires m_Dataset != null;
 	@Override
@@ -133,8 +133,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * 
 	 * @return true if the instance's class is missing
 	 * @throws UnassignedClassException
-	 *             if the class is not set or the instance doesn't have access
-	 *             to a dataset
+	 *             if the class is not set or the instance doesn't have access to a
+	 *             dataset
 	 */
 	// @ requires classIndex() >= 0;
 	@Override
@@ -151,12 +151,12 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * Returns an instance's class value in internal format. (ie. as a
 	 * floating-point number)
 	 * 
-	 * @return the corresponding value as a double (If the corresponding
-	 *         attribute is nominal (or a string) then it returns the value's
-	 *         index as a double).
+	 * @return the corresponding value as a double (If the corresponding attribute
+	 *         is nominal (or a string) then it returns the value's index as a
+	 *         double).
 	 * @throws UnassignedClassException
-	 *             if the class is not set or the instance doesn't have access
-	 *             to a dataset
+	 *             if the class is not set or the instance doesn't have access to a
+	 *             dataset
 	 */
 	// @ requires classIndex() >= 0;
 	@Override
@@ -184,8 +184,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Deletes an attribute at the given position (0 to numAttributes() - 1).
-	 * Only succeeds if the instance does not have access to any dataset because
+	 * Deletes an attribute at the given position (0 to numAttributes() - 1). Only
+	 * succeeds if the instance does not have access to any dataset because
 	 * otherwise inconsistencies could be introduced.
 	 * 
 	 * @param position
@@ -241,8 +241,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Checks if the headers of two instances are equivalent. If not, then
-	 * returns a message why they differ.
+	 * Checks if the headers of two instances are equivalent. If not, then returns a
+	 * message why they differ.
 	 * 
 	 * @param dataset
 	 *            another instance
@@ -260,8 +260,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Tests whether an instance has a missing value. Skips the class attribute
-	 * if set.
+	 * Tests whether an instance has a missing value. Skips the class attribute if
+	 * set.
 	 * 
 	 * @return true if instance has a missing value.
 	 * @throws UnassignedDatasetException
@@ -345,8 +345,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Tests if a specific value is "missing". The given attribute has to belong
-	 * to a dataset.
+	 * Tests if a specific value is "missing". The given attribute has to belong to
+	 * a dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -361,8 +361,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	/**
 	 * Returns the number of class labels.
 	 * 
-	 * @return the number of class labels as an integer if the class attribute
-	 *         is nominal, 1 otherwise.
+	 * @return the number of class labels as an integer if the class attribute is
+	 *         nominal, 1 otherwise.
 	 * @throws UnassignedDatasetException
 	 *             if instance doesn't have access to any dataset
 	 */
@@ -403,9 +403,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * performed before the value is set.
 	 * 
 	 * @param value
-	 *            the new attribute value (If the corresponding attribute is
-	 *            nominal (or a string) then this is the new value's index as a
-	 *            double).
+	 *            the new attribute value (If the corresponding attribute is nominal
+	 *            (or a string) then this is the new value's index as a double).
 	 * @throws UnassignedClassException
 	 *             if the class is not set
 	 * @throws UnaddignedDatasetException
@@ -423,13 +422,12 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Sets the class value of an instance to the given value. A deep copy of
-	 * the vector of attribute values is performed before the value is set.
+	 * Sets the class value of an instance to the given value. A deep copy of the
+	 * vector of attribute values is performed before the value is set.
 	 * 
 	 * @param value
-	 *            the new class value (If the class is a string attribute and
-	 *            the value can't be found, the value is added to the
-	 *            attribute).
+	 *            the new class value (If the class is a string attribute and the
+	 *            value can't be found, the value is added to the attribute).
 	 * @throws UnassignedClassException
 	 *             if the class is not set
 	 * @throws UnassignedDatasetException
@@ -465,8 +463,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Sets a specific value to be "missing". Performs a deep copy of the vector
-	 * of attribute values before the value is set to be missing.
+	 * Sets a specific value to be "missing". Performs a deep copy of the vector of
+	 * attribute values before the value is set to be missing.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index
@@ -478,9 +476,9 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Sets a specific value to be "missing". Performs a deep copy of the vector
-	 * of attribute values before the value is set to be missing. The given
-	 * attribute has to belong to a dataset.
+	 * Sets a specific value to be "missing". Performs a deep copy of the vector of
+	 * attribute values before the value is set to be missing. The given attribute
+	 * has to belong to a dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -492,16 +490,15 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Sets a value of a nominal or string attribute to the given value.
-	 * Performs a deep copy of the vector of attribute values before the value
-	 * is set.
+	 * Sets a value of a nominal or string attribute to the given value. Performs a
+	 * deep copy of the vector of attribute values before the value is set.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index
 	 * @param value
-	 *            the new attribute value (If the attribute is a string
-	 *            attribute and the value can't be found, the value is added to
-	 *            the attribute).
+	 *            the new attribute value (If the attribute is a string attribute
+	 *            and the value can't be found, the value is added to the
+	 *            attribute).
 	 * @throws UnassignedDatasetException
 	 *             if the dataset is not set
 	 * @throws IllegalArgumentException
@@ -535,16 +532,15 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	/**
 	 * Sets a specific value in the instance to the given value (internal
 	 * floating-point format). Performs a deep copy of the vector of attribute
-	 * values before the value is set, so if you are planning on calling
-	 * setValue many times it may be faster to create a new instance using
-	 * toDoubleArray. The given attribute has to belong to a dataset.
+	 * values before the value is set, so if you are planning on calling setValue
+	 * many times it may be faster to create a new instance using toDoubleArray. The
+	 * given attribute has to belong to a dataset.
 	 * 
 	 * @param att
 	 *            the attribute
 	 * @param value
-	 *            the new attribute value (If the corresponding attribute is
-	 *            nominal (or a string) then this is the new value's index as a
-	 *            double).
+	 *            the new attribute value (If the corresponding attribute is nominal
+	 *            (or a string) then this is the new value's index as a double).
 	 */
 	@Override
 	public final void setValue(Attribute att, double value) {
@@ -553,18 +549,18 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Sets a value of an nominal or string attribute to the given value.
-	 * Performs a deep copy of the vector of attribute values before the value
-	 * is set, so if you are planning on calling setValue many times it may be
-	 * faster to create a new instance using toDoubleArray. The given attribute
-	 * has to belong to a dataset.
+	 * Sets a value of an nominal or string attribute to the given value. Performs a
+	 * deep copy of the vector of attribute values before the value is set, so if
+	 * you are planning on calling setValue many times it may be faster to create a
+	 * new instance using toDoubleArray. The given attribute has to belong to a
+	 * dataset.
 	 * 
 	 * @param att
 	 *            the attribute
 	 * @param value
-	 *            the new attribute value (If the attribute is a string
-	 *            attribute and the value can't be found, the value is added to
-	 *            the attribute).
+	 *            the new attribute value (If the attribute is a string attribute
+	 *            and the value can't be found, the value is added to the
+	 *            attribute).
 	 * @throws IllegalArgumentException
 	 *             if the the attribute is not nominal or a string, or the value
 	 *             couldn't be found for a nominal attribute
@@ -625,8 +621,7 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * 
 	 * @param att
 	 *            the attribute
-	 * @return the corresponding relation as an Instances object, null if
-	 *         missing
+	 * @return the corresponding relation as an Instances object, null if missing
 	 * @throws IllegalArgumentException
 	 *             if the attribute is not a relation-valued attribute
 	 * @throws UnassignedDatasetException
@@ -647,8 +642,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Returns the value of a nominal, string, date, or relational attribute for
-	 * the instance as a string.
+	 * Returns the value of a nominal, string, date, or relational attribute for the
+	 * instance as a string.
 	 * 
 	 * @param attIndex
 	 *            the attribute's index
@@ -670,8 +665,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Returns the value of a nominal, string, date, or relational attribute for
-	 * the instance as a string.
+	 * Returns the value of a nominal, string, date, or relational attribute for the
+	 * instance as a string.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -703,20 +698,20 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Returns the description of one instance with any numeric values printed
-	 * at the supplied maximum number of decimal places. If the instance doesn't
-	 * have access to a dataset, it returns the internal floating-point values.
-	 * Quotes string values that contain whitespace characters.
+	 * Returns the description of one instance with any numeric values printed at
+	 * the supplied maximum number of decimal places. If the instance doesn't have
+	 * access to a dataset, it returns the internal floating-point values. Quotes
+	 * string values that contain whitespace characters.
 	 * 
 	 * @param afterDecimalPoint
-	 *            the maximum number of digits permitted after the decimal point
-	 *            for a numeric value
+	 *            the maximum number of digits permitted after the decimal point for
+	 *            a numeric value
 	 * 
 	 * @return the instance's description as a string
 	 */
 	@Override
 	public final String toStringMaxDecimalDigits(int afterDecimalPoint) {
-		StringBuffer text = new StringBuffer(toStringNoWeight(afterDecimalPoint));
+		StringBuilder text = new StringBuilder(toStringNoWeight(afterDecimalPoint));
 
 		if (m_Weight != 1.0) {
 			text.append(",{" + Utils.doubleToString(m_Weight, afterDecimalPoint) + "}");
@@ -726,9 +721,9 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Returns the description of one instance. If the instance doesn't have
-	 * access to a dataset, it returns the internal floating-point values.
-	 * Quotes string values that contain whitespace characters.
+	 * Returns the description of one instance. If the instance doesn't have access
+	 * to a dataset, it returns the internal floating-point values. Quotes string
+	 * values that contain whitespace characters.
 	 * 
 	 * @return the instance's description as a string
 	 */
@@ -762,14 +757,14 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * @param attIndex
 	 *            the attribute's index
 	 * @param afterDecimalPoint
-	 *            the maximum number of digits permitted after the decimal point
-	 *            for numeric values
+	 *            the maximum number of digits permitted after the decimal point for
+	 *            numeric values
 	 * @return the value's description as a string
 	 */
 	@Override
 	public final/* @pure@ */String toString(int attIndex, int afterDecimalPoint) {
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		if (isMissing(attIndex)) {
 			text.append("?");
@@ -799,8 +794,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * Returns the description of one value of the instance as a string. If the
 	 * instance doesn't have access to a dataset it returns the internal
 	 * floating-point value. Quotes string values that contain whitespace
-	 * characters, or if they are a question mark. The given attribute has to
-	 * belong to a dataset.
+	 * characters, or if they are a question mark. The given attribute has to belong
+	 * to a dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -816,8 +811,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	 * Returns the description of one value of the instance as a string. If the
 	 * instance doesn't have access to a dataset it returns the internal
 	 * floating-point value. Quotes string values that contain whitespace
-	 * characters, or if they are a question mark. The given attribute has to
-	 * belong to a dataset.
+	 * characters, or if they are a question mark. The given attribute has to belong
+	 * to a dataset.
 	 * 
 	 * @param att
 	 *            the attribute
@@ -832,14 +827,13 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Returns an instance's attribute value in internal format. The given
-	 * attribute has to belong to a dataset.
+	 * Returns an instance's attribute value in internal format. The given attribute
+	 * has to belong to a dataset.
 	 * 
 	 * @param att
 	 *            the attribute
-	 * @return the specified value as a double (If the corresponding attribute
-	 *         is nominal (or a string) then it returns the value's index as a
-	 *         double).
+	 * @return the specified value as a double (If the corresponding attribute is
+	 *         nominal (or a string) then it returns the value's index as a double).
 	 */
 	@Override
 	public/* @pure@ */double value(Attribute att) {
@@ -848,14 +842,13 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	}
 
 	/**
-	 * Returns an instance's attribute value in internal format, given an index
-	 * in the sparse representation.
+	 * Returns an instance's attribute value in internal format, given an index in
+	 * the sparse representation.
 	 * 
 	 * @param indexOfIndex
 	 *            the index of the attribute's index
-	 * @return the specified value as a double (If the corresponding attribute
-	 *         is nominal (or a string) then it returns the value's index as a
-	 *         double).
+	 * @return the specified value as a double (If the corresponding attribute is
+	 *         nominal (or a string) then it returns the value's index as a double).
 	 */
 	@Override
 	public/* @pure@ */double valueSparse(int indexOfIndex) {
@@ -893,8 +886,8 @@ public abstract class AbstractInstance implements Instance, Serializable, Revisi
 	protected abstract void forceDeleteAttributeAt(int position);
 
 	/**
-	 * Inserts an attribute at the given position (0 to numAttributes()) and
-	 * sets its value to be missing.
+	 * Inserts an attribute at the given position (0 to numAttributes()) and sets
+	 * its value to be missing.
 	 * 
 	 * @param position
 	 *            the attribute's position

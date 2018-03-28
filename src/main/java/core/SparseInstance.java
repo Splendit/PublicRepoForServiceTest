@@ -53,8 +53,8 @@ public class SparseInstance extends AbstractInstance {
 	 * access to information about the attribute types)
 	 * 
 	 * @param instance
-	 *            the instance from which the attribute values and the weight
-	 *            are to be copied
+	 *            the instance from which the attribute values and the weight are to
+	 *            be copied
 	 */
 	public SparseInstance(Instance instance) {
 
@@ -83,9 +83,9 @@ public class SparseInstance extends AbstractInstance {
 	}
 
 	/**
-	 * Constructor that copies the info from the given instance. Reference to
-	 * the dataset is set to null. (ie. the instance doesn't have access to
-	 * information about the attribute types)
+	 * Constructor that copies the info from the given instance. Reference to the
+	 * dataset is set to null. (ie. the instance doesn't have access to information
+	 * about the attribute types)
 	 * 
 	 * @param instance
 	 *            the instance from which the attribute info is to be copied
@@ -131,11 +131,10 @@ public class SparseInstance extends AbstractInstance {
 	}
 
 	/**
-	 * Constructor that inititalizes instance variable with given values.
-	 * Reference to the dataset is set to null. (ie. the instance doesn't have
-	 * access to information about the attribute types) Note that the indices
-	 * need to be sorted in ascending order. Otherwise things won't work
-	 * properly.
+	 * Constructor that inititalizes instance variable with given values. Reference
+	 * to the dataset is set to null. (ie. the instance doesn't have access to
+	 * information about the attribute types) Note that the indices need to be
+	 * sorted in ascending order. Otherwise things won't work properly.
 	 * 
 	 * @param weight
 	 *            the instance's weight
@@ -174,9 +173,9 @@ public class SparseInstance extends AbstractInstance {
 	}
 
 	/**
-	 * Constructor of an instance that sets weight to one, all values to be
-	 * missing, and the reference to the dataset to null. (ie. the instance
-	 * doesn't have access to information about the attribute types)
+	 * Constructor of an instance that sets weight to one, all values to be missing,
+	 * and the reference to the dataset to null. (ie. the instance doesn't have
+	 * access to information about the attribute types)
 	 * 
 	 * @param numAttributes
 	 *            the size of the instance
@@ -202,8 +201,8 @@ public class SparseInstance extends AbstractInstance {
 
 	/**
 	 * Produces a shallow copy of this instance. The copy has access to the same
-	 * dataset. (if you want to make a copy that doesn't have access to the
-	 * dataset, use <code>new SparseInstance(instance)</code>
+	 * dataset. (if you want to make a copy that doesn't have access to the dataset,
+	 * use <code>new SparseInstance(instance)</code>
 	 * 
 	 * @return the shallow copy
 	 */
@@ -278,8 +277,8 @@ public class SparseInstance extends AbstractInstance {
 	}
 
 	/**
-	 * Merges this instance with the given instance and returns the result.
-	 * Dataset is set to null.
+	 * Merges this instance with the given instance and returns the result. Dataset
+	 * is set to null.
 	 * 
 	 * @param inst
 	 *            the instance to be merged with this one
@@ -327,9 +326,9 @@ public class SparseInstance extends AbstractInstance {
 	}
 
 	/**
-	 * Replaces all missing values in the instance with the values contained in
-	 * the given array. A deep copy of the vector of attribute values is
-	 * performed before the values are replaced.
+	 * Replaces all missing values in the instance with the values contained in the
+	 * given array. A deep copy of the vector of attribute values is performed
+	 * before the values are replaced.
 	 * 
 	 * @param array
 	 *            containing the means and modes
@@ -372,9 +371,8 @@ public class SparseInstance extends AbstractInstance {
 	 * @param attIndex
 	 *            the attribute's index
 	 * @param value
-	 *            the new attribute value (If the corresponding attribute is
-	 *            nominal (or a string) then this is the new value's index as a
-	 *            double).
+	 *            the new attribute value (If the corresponding attribute is nominal
+	 *            (or a string) then this is the new value's index as a double).
 	 */
 	@Override
 	public void setValue(int attIndex, double value) {
@@ -421,9 +419,8 @@ public class SparseInstance extends AbstractInstance {
 	 * @param indexOfIndex
 	 *            the index of the attribute's index
 	 * @param value
-	 *            the new attribute value (If the corresponding attribute is
-	 *            nominal (or a string) then this is the new value's index as a
-	 *            double).
+	 *            the new attribute value (If the corresponding attribute is nominal
+	 *            (or a string) then this is the new value's index as a double).
 	 */
 	@Override
 	public void setValueSparse(int indexOfIndex, double value) {
@@ -491,13 +488,13 @@ public class SparseInstance extends AbstractInstance {
 		StringBuilder text = new StringBuilder();
 
 		text.append('{');
-		String prefix = new String("");
+		String prefix = "";
 		int sparseIndex = 0;
 		for (int i = 0; i < m_NumAttributes; i++) {
 
 			// Have we already output some values?
 			if (text.length() > 1) {
-				prefix = new String(",");
+				prefix = ",";
 			}
 
 			double value = 0;
@@ -558,9 +555,8 @@ public class SparseInstance extends AbstractInstance {
 	 * 
 	 * @param attIndex
 	 *            the attribute's index
-	 * @return the specified value as a double (If the corresponding attribute
-	 *         is nominal (or a string) then it returns the value's index as a
-	 *         double).
+	 * @return the specified value as a double (If the corresponding attribute is
+	 *         nominal (or a string) then it returns the value's index as a double).
 	 */
 	@Override
 	public double value(int attIndex) {
@@ -611,8 +607,8 @@ public class SparseInstance extends AbstractInstance {
 	}
 
 	/**
-	 * Inserts an attribute at the given position (0 to numAttributes()) and
-	 * sets its value to be missing.
+	 * Inserts an attribute at the given position (0 to numAttributes()) and sets
+	 * its value to be missing.
 	 * 
 	 * @param position
 	 *            the attribute's position

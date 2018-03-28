@@ -59,7 +59,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 			for (int i = 0; i < nNodes; i++) {
 				int iNode = order[i];
 				if (cliques[iNode] != null) {
-					System.out.print(String.format("Clique %d (\n", iNode));
+					System.out.print(String.format("Clique %d (%n", iNode));
 					Iterator<Integer> nodes = cliques[iNode].iterator();
 					while (nodes.hasNext()) {
 						int iNode2 = nodes.next();
@@ -77,7 +77,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 							System.out.print(",");
 						}
 					}
-					System.out.println(String.format(") parent clique %d \n", parentCliques[iNode]));
+					System.out.println(String.format(") parent clique %d %n", parentCliques[iNode]));
 				}
 			}
 		}
@@ -143,8 +143,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				JunctionTreeNode parent = null;
 				if (parentCliques[iNode] > 0) {
 					parent = jtns[parentCliques[iNode]];
-					JunctionTreeSeparator jts = new JunctionTreeSeparator(separators[iNode], jtns[iNode],
-							parent);
+					JunctionTreeSeparator jts = new JunctionTreeSeparator(separators[iNode], jtns[iNode], parent);
 					jtns[iNode].setParentSeparator(jts);
 					jtns[parentCliques[iNode]].addChildClique(jtns[iNode]);
 				} else {
@@ -158,7 +157,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 		int iCPTnew = 0;
 		for (int iNode = 0; iNode < nNodes; iNode++) {
 			int nNode = nodeSet[iNode];
-			iCPTnew = iCPTnew + values[order[nNode]];
+			iCPTnew += values[order[nNode]];
 		}
 		return iCPTnew;
 	} // getCPT
@@ -212,10 +211,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				processedNodes.addAll(cliques[iNode]);
 			}
 		}
-		int sum = 0;
-		for(int n : processedNodes) {
-			sum += n;
-		}
+		int sum = processedNodes.stream().mapToInt(Integer::intValue).sum();
 		System.out.println(sum);
 
 		return separators;
@@ -252,10 +248,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				}
 			}
 
-			int sum = 0;
-			for(int n : clique) {
-				sum += n;
-			}
+			int sum = clique.stream().mapToInt(Integer::intValue).sum();
 			clique.add(sum);
 
 			// for (int iNode2 = 0; iNode2 < nNodes; iNode2++) {
@@ -299,8 +292,8 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 
 	/**
 	 * moralize DAG and calculate adjacency matrix representation for a Bayes
-	 * Network, effecively converting the directed acyclic graph to an
-	 * undirected graph.
+	 * Network, effecively converting the directed acyclic graph to an undirected
+	 * graph.
 	 * 
 	 * @param bayesNet
 	 *            Bayes Network to process
@@ -313,9 +306,9 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 	} // moralize
 
 	/**
-	 * Apply Tarjan and Yannakakis (1984) fill in algorithm for graph
-	 * triangulation. In reverse order, insert edges between any non-adjacent
-	 * neighbors that are lower numbered in the ordering.
+	 * Apply Tarjan and Yannakakis (1984) fill in algorithm for graph triangulation.
+	 * In reverse order, insert edges between any non-adjacent neighbors that are
+	 * lower numbered in the ordering.
 	 * 
 	 * Side effect: input matrix is used as output
 	 * 
@@ -356,9 +349,8 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 	} // fillIn
 
 	/**
-	 * calculate maximum cardinality ordering; start with first node add node
-	 * that has most neighbors already ordered till all nodes are in the
-	 * ordering
+	 * calculate maximum cardinality ordering; start with first node add node that
+	 * has most neighbors already ordered till all nodes are in the ordering
 	 * 
 	 * This implementation does not assume the graph is connected
 	 * 
@@ -467,8 +459,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 		JunctionTreeNode m_parentNode;
 		JunctionTreeNode m_childNode;
 
-		JunctionTreeSeparator(Set<Integer> separator, JunctionTreeNode childNode,
-				JunctionTreeNode parentNode) {
+		JunctionTreeSeparator(Set<Integer> separator, JunctionTreeNode childNode, JunctionTreeNode parentNode) {
 			// ////////////////////
 			// initialize node set
 			m_nNodes = new int[separator.size()];
@@ -483,8 +474,8 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 		} // c'tor
 
 		/**
-		 * marginalize junciontTreeNode node over all nodes outside the
-		 * separator set of the parent clique
+		 * marginalize junciontTreeNode node over all nodes outside the separator set of
+		 * the parent clique
 		 * 
 		 */
 		public void updateFromParent() {
@@ -496,7 +487,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				// normalize
 				double sum = 0;
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-					sum = sum + m_fiParent[iPos];
+					sum += m_fiParent[iPos];
 				}
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
 					m_fiParent[iPos] = m_fiParent[iPos] / sum;
@@ -505,8 +496,8 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 		} // updateFromParent
 
 		/**
-		 * marginalize junciontTreeNode node over all nodes outside the
-		 * separator set of the child clique
+		 * marginalize junciontTreeNode node over all nodes outside the separator set of
+		 * the child clique
 		 * 
 		 */
 		public void updateFromChild() {
@@ -518,7 +509,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				// normalize
 				double sum = 0;
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-					sum = sum + m_fiChild[iPos];
+					sum += m_fiChild[iPos];
 				}
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
 					m_fiChild[iPos] = m_fiChild[iPos] / sum;
@@ -527,12 +518,10 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 		} // updateFromChild
 
 		/**
-		 * marginalize junciontTreeNode node over all nodes outside the
-		 * separator set
+		 * marginalize junciontTreeNode node over all nodes outside the separator set
 		 * 
 		 * @param node
-		 *            one of the neighboring junciont tree nodes of this
-		 *            separator
+		 *            one of the neighboring junciont tree nodes of this separator
 		 */
 		public double[] update(JunctionTreeNode node) {
 			if (node.m_P == null) {
@@ -630,8 +619,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 			for (int iNode = 0; iNode < m_nNodes.length; iNode++) {
 				order[m_nNodes[iNode]] = iNode;
 			}
-			for (JunctionTreeNode element : m_children) {
-				JunctionTreeNode childNode = element;
+			m_children.stream().map(element -> element).forEach(childNode -> {
 				JunctionTreeSeparator separator = childNode.m_parentSeparator;
 				// Update the values
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
@@ -649,14 +637,14 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 						}
 					}
 				}
-			}
+			});
 			// normalize
 			double sum = 0;
 			for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-				sum = sum + m_P[iPos];
+				sum += m_P[iPos];
 			}
 			for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-				m_P[iPos] = m_P[iPos]/ sum;
+				m_P[iPos] = m_P[iPos] / sum;
 			}
 
 			if (m_parentSeparator != null) { // not a root node
@@ -680,7 +668,8 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 					int iSepCPT = getCPT(m_parentSeparator.m_nNodes, m_parentSeparator.m_nNodes.length, values, order);
 					int iNodeCPT = getCPT(m_nNodes, m_nNodes.length, values, order);
 					if (m_parentSeparator.m_fiChild[iSepCPT] > 0) {
-						m_P[iNodeCPT] = m_P[iNodeCPT] * m_parentSeparator.m_fiParent[iSepCPT] / m_parentSeparator.m_fiChild[iSepCPT];
+						m_P[iNodeCPT] = m_P[iNodeCPT] * m_parentSeparator.m_fiParent[iSepCPT]
+								/ m_parentSeparator.m_fiChild[iSepCPT];
 					} else {
 						m_P[iNodeCPT] = 0;
 					}
@@ -698,7 +687,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				// normalize
 				double sum = 0;
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-					sum = sum + m_P[iPos];
+					sum += m_P[iPos];
 				}
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
 					m_P[iPos] = m_P[iPos] / sum;
@@ -707,16 +696,14 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				calcMarginalProbabilities();
 			}
 			if (recursively) {
-				for (Object element : m_children) {
-					JunctionTreeNode childNode = (JunctionTreeNode) element;
-					childNode.initializeDown(true);
-				}
+				m_children.stream().map(element -> (JunctionTreeNode) element)
+						.forEach(childNode -> childNode.initializeDown(true));
 			}
 		} // initializeDown
 
 		/**
-		 * calculate marginal probabilities for the individual nodes in the
-		 * clique. Store results in m_MarginalP
+		 * calculate marginal probabilities for the individual nodes in the clique.
+		 * Store results in m_MarginalP
 		 */
 		void calcMarginalProbabilities() {
 			// calculate marginal probabilities
@@ -751,7 +738,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 
 		@Override
 		public String toString() {
-			StringBuffer buf = new StringBuffer();
+			StringBuilder buf = new StringBuilder();
 			for (int iNode = 0; iNode < m_nNodes.length; iNode++) {
 				buf.append(m_nNodes[iNode] + ": ");
 				for (int iValue = 0; iValue < m_MarginalP[iNode].length; iValue++) {
@@ -759,11 +746,10 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				}
 				buf.append('\n');
 			}
-			for (Object element : m_children) {
-				JunctionTreeNode childNode = (JunctionTreeNode) element;
+			m_children.stream().map(element -> (JunctionTreeNode) element).forEach(childNode -> {
 				buf.append("----------------\n");
 				buf.append(childNode + "");
-			}
+			});
 			return buf.toString();
 		} // toString
 
@@ -862,7 +848,7 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 			// normalize
 			double sum = 0;
 			for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-				sum = sum + m_P[iPos];
+				sum += m_P[iPos];
 			}
 			for (int iPos = 0; iPos < m_nCardinality; iPos++) {
 				m_P[iPos] = m_P[iPos] / sum;
@@ -903,19 +889,18 @@ public class MarginCalculator implements Serializable, RevisionHandler {
 				// normalize
 				double sum = 0;
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
-					sum = sum + m_P[iPos];
+					sum += m_P[iPos];
 				}
 				for (int iPos = 0; iPos < m_nCardinality; iPos++) {
 					m_P[iPos] = m_P[iPos] / sum;
 				}
 				calcMarginalProbabilities();
 			}
-			for (Object element : m_children) {
-				JunctionTreeNode childNode = (JunctionTreeNode) element;
+			m_children.stream().map(element -> (JunctionTreeNode) element).forEach(childNode -> {
 				if (childNode != source) {
 					childNode.initializeDown(true);
 				}
-			}
+			});
 			if (m_parentSeparator != null) {
 				m_parentSeparator.updateFromChild();
 				m_parentSeparator.m_parentNode.updateEvidence(this);

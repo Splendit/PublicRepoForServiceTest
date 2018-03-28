@@ -139,24 +139,22 @@ public class SerializedObject implements Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns a serialized object. Uses org.python.util.PythonObjectInputStream
-	 * for Jython objects (read <a href=
-	 * "http://aspn.activestate.com/ASPN/Mail/Message/Jython-users/1001401"
+	 * Returns a serialized object. Uses org.python.util.PythonObjectInputStream for
+	 * Jython objects (read
+	 * <a href= "http://aspn.activestate.com/ASPN/Mail/Message/Jython-users/1001401"
 	 * >here</a> for more details).
 	 *
 	 * @return the restored object
 	 */
 	public Object getObject() {
-		try {
-			ByteArrayInputStream istream = new ByteArrayInputStream(mStoredObjectArray);
+		try (ByteArrayInputStream istream = new ByteArrayInputStream(mStoredObjectArray)) {
 			ObjectInputStream p;
 			Object toReturn = null;
 			if (mIsJython) {
 			} else {
-				
+
 				toReturn = null;
 			}
-			istream.close();
 			return toReturn;
 		} catch (Exception e) {
 			e.printStackTrace();

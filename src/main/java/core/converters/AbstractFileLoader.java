@@ -33,6 +33,7 @@ import core.Instances;
 import core.Option;
 import core.OptionHandler;
 import core.Utils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Abstract superclass for all file loaders.
@@ -46,7 +47,7 @@ public abstract class AbstractFileLoader extends AbstractLoader implements FileS
 	private static final long serialVersionUID = 5535537461920594758L;
 
 	/** the extension for compressed files */
-	public static String FILE_EXTENSION_COMPRESSED = new String(".gz");
+	public static String FILE_EXTENSION_COMPRESSED = ".gz";
 
 	/** the file */
 	protected String m_File = (new File(System.getProperty("user.dir"))).getAbsolutePath();
@@ -159,27 +160,26 @@ public abstract class AbstractFileLoader extends AbstractLoader implements FileS
 		file = new File(fName);
 		// set the source only if the file exists
 		if (file.exists() && file.isFile()) {
-			if (file.getName().endsWith(getFileExtension() + FILE_EXTENSION_COMPRESSED)) {
+			if (StringUtils.endsWith(file.getName(), getFileExtension() + FILE_EXTENSION_COMPRESSED)) {
 				setSource(new GZIPInputStream(new FileInputStream(file)));
 			} else {
 				setSource(new FileInputStream(file));
 			}
 		} else {
-//			 System.out.println("Looking in classpath.... \n");
+			// System.out.println("Looking in classpath.... \n");
 			// look for it as a resource in the classpath
 
 			// forward slashes are platform independent for loading from the
 			// classpath...
 			String fnameWithCorrectSeparators = fName.replace(File.separatorChar, '/');
 			if (this.getClass().getClassLoader().getResource(fnameWithCorrectSeparators) != null) {
-//				 System.out.println("Found resource in classpath... \n");
+				// System.out.println("Found resource in classpath... \n");
 				setSource(this.getClass().getClassLoader().getResourceAsStream(fnameWithCorrectSeparators));
 			}
 		}
 		// }
 		/*
-		 * catch (FileNotFoundException ex) { throw new
-		 * IOException("File not found"); }
+		 * catch (FileNotFoundException ex) { throw new IOException("File not found"); }
 		 */
 
 		if (m_useRelativePath) {
@@ -237,10 +237,10 @@ public abstract class AbstractFileLoader extends AbstractLoader implements FileS
 	 * @return the option string
 	 */
 	protected static String makeOptionStr(AbstractFileLoader loader) {
-		StringBuffer result;
+		StringBuilder result;
 		Option option;
 
-		result = new StringBuffer("\nUsage:\n");
+		result = new StringBuilder("\nUsage:\n");
 		result.append("\t" + loader.getClass().getName().replaceAll(".*\\.", ""));
 		result.append(" <");
 		String[] ext = loader.getFileExtensions();
@@ -275,8 +275,7 @@ public abstract class AbstractFileLoader extends AbstractLoader implements FileS
 	 * @param loader
 	 *            the loader to run
 	 * @param options
-	 *            the commandline options, first argument must be the file to
-	 *            load
+	 *            the commandline options, first argument must be the file to load
 	 */
 	public static void runFileLoader(AbstractFileLoader loader, String[] options) {
 		// help request?
@@ -347,12 +346,12 @@ public abstract class AbstractFileLoader extends AbstractLoader implements FileS
 	 *                public void setSource(File file) throws IOException {
 	 *                m_structure = null; setRetrieval(NONE);
 	 * 
-	 *                if (file == null) { throw new IOException("Source file
-	 *                object is null!"); }
+	 *                if (file == null) { throw new IOException("Source file object
+	 *                is null!"); }
 	 * 
 	 *                try { setSource(new FileInputStream(file)); } catch
-	 *                (FileNotFoundException ex) { throw new IOException("File
-	 *                not found"); }
+	 *                (FileNotFoundException ex) { throw new IOException("File not
+	 *                found"); }
 	 * 
 	 *                m_sourceFile = file; m_File = file.getAbsolutePath(); }
 	 */

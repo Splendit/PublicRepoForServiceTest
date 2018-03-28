@@ -29,6 +29,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Calendar;
+import java.util.stream.Collectors;
 
 /**
  * Class for handling an attribute. Once an attribute has been created, it can't
@@ -148,8 +149,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	/** The attribute's type. */
 	protected/* @ spec_public @ */int m_Type;
 	/*
-	 * @ invariant m_Type == NUMERIC || m_Type == DATE || m_Type == STRING ||
-	 * m_Type == NOMINAL || m_Type == RELATIONAL;
+	 * @ invariant m_Type == NUMERIC || m_Type == DATE || m_Type == STRING || m_Type
+	 * == NOMINAL || m_Type == RELATIONAL;
 	 */
 
 	/** The attribute info (null for numeric attributes) */
@@ -197,14 +198,14 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Constructor for a numeric or string attribute. Provides an alternative
-	 * way for creating string attributes.
+	 * Constructor for a numeric or string attribute. Provides an alternative way
+	 * for creating string attributes.
 	 *
 	 * @param attributeName
 	 *            the name for the attribute
 	 * @param createStringAttribute
-	 *            if true, a string attribute will be created, otherwise a
-	 *            numeric one.
+	 *            if true, a string attribute will be created, otherwise a numeric
+	 *            one.
 	 */
 	// @ requires attributeName != null;
 	// @ ensures m_Name == attributeName;
@@ -214,14 +215,14 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Constructor for a numeric or string attribute, where metadata is
-	 * supplied. Provides an alternative way for creating string attributes.
+	 * Constructor for a numeric or string attribute, where metadata is supplied.
+	 * Provides an alternative way for creating string attributes.
 	 *
 	 * @param attributeName
 	 *            the name for the attribute
 	 * @param createStringAttribute
-	 *            if true, a string attribute will be created, otherwise a
-	 *            numeric one.
+	 *            if true, a string attribute will be created, otherwise a numeric
+	 *            one.
 	 * @param metadata
 	 *            the attribute's properties
 	 */
@@ -283,9 +284,9 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Constructor for nominal attributes and string attributes. If a null
-	 * vector of attribute values is passed to the method, the attribute is
-	 * assumed to be a string.
+	 * Constructor for nominal attributes and string attributes. If a null vector of
+	 * attribute values is passed to the method, the attribute is assumed to be a
+	 * string.
 	 * 
 	 * @param attributeName
 	 *            the name for the attribute
@@ -297,14 +298,14 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	// @ ensures m_Name == attributeName;
 	public Attribute(String attributeName, List<String> attributeValues) {
 		this(attributeName, attributeValues, (ProtectedProperties) null);
-		
-		attributeValues.stream().forEach(attr -> {attr = attr + "";});
+
+		attributeValues.stream().forEach(attr -> attr = attr + "");
 	}
 
 	/**
-	 * Constructor for nominal attributes and string attributes, where metadata
-	 * is supplied. If a null vector of attribute values is passed to the
-	 * method, the attribute is assumed to be a string.
+	 * Constructor for nominal attributes and string attributes, where metadata is
+	 * supplied. If a null vector of attribute values is passed to the method, the
+	 * attribute is assumed to be a string.
 	 * 
 	 * @param attributeName
 	 *            the name for the attribute
@@ -320,8 +321,7 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	 * @ ensures m_Name == attributeName; ensures m_Index == -1; ensures
 	 * attributeValues == null && m_Type == STRING || attributeValues != null &&
 	 * m_Type == NOMINAL && m_Values.size() == attributeValues.size(); signals
-	 * (IllegalArgumentException ex) (* if duplicate strings in attributeValues
-	 * *);
+	 * (IllegalArgumentException ex) (* if duplicate strings in attributeValues *);
 	 */
 	public Attribute(String attributeName, List<String> attributeValues, ProtectedProperties metadata) {
 
@@ -414,9 +414,9 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Constructor for nominal attributes and string attributes with a
-	 * particular index. If a null vector of attribute values is passed to the
-	 * method, the attribute is assumed to be a string.
+	 * Constructor for nominal attributes and string attributes with a particular
+	 * index. If a null vector of attribute values is passed to the method, the
+	 * attribute is assumed to be a string.
 	 * 
 	 * @param attributeName
 	 *            the name for the attribute
@@ -477,8 +477,7 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	public final/* @ pure @ */Enumeration<Object> enumerateValues() {
 
 		if (isNominal() || isString()) {
-			final Enumeration<Object> ee = new WekaEnumeration<Object>(
-					((NominalAttributeInfo) m_AttributeInfo).m_Values);
+			final Enumeration<Object> ee = new WekaEnumeration<>(((NominalAttributeInfo) m_AttributeInfo).m_Values);
 			return new Enumeration<Object>() {
 				@Override
 				public boolean hasMoreElements() {
@@ -500,8 +499,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Tests if given attribute is equal to this attribute. Attribute indices
-	 * are ignored in the comparison.
+	 * Tests if given attribute is equal to this attribute. Attribute indices are
+	 * ignored in the comparison.
 	 * 
 	 * @param other
 	 *            the Object to be compared to this attribute
@@ -523,9 +522,9 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Tests if given attribute is equal to this attribute. If they're not the
-	 * same a message detailing why they differ will be returned, otherwise
-	 * null. Attribute indices are ignored in the comparison.
+	 * Tests if given attribute is equal to this attribute. If they're not the same
+	 * a message detailing why they differ will be returned, otherwise null.
+	 * Attribute indices are ignored in the comparison.
 	 * 
 	 * @param other
 	 *            the Object to be compared to this attribute
@@ -691,8 +690,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	 * 
 	 * @param value
 	 *            the value for which the index is to be returned
-	 * @return the index of the given attribute value if attribute is nominal or
-	 *         a string, -1 if it is not or the value can't be found
+	 * @return the index of the given attribute value if attribute is nominal or a
+	 *         string, -1 if it is not or the value can't be found
 	 */
 	public final int indexOfValue(String value) {
 
@@ -782,8 +781,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns the number of attribute values. Returns 0 for attributes that are
-	 * not either nominal, string, or relation-valued.
+	 * Returns the number of attribute values. Returns 0 for attributes that are not
+	 * either nominal, string, or relation-valued.
 	 * 
 	 * @return the number of attribute values
 	 */
@@ -805,7 +804,7 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	@Override
 	public final String toString() {
 
-		StringBuffer text = new StringBuffer();
+		StringBuilder text = new StringBuilder();
 
 		text.append(ARFF_ATTRIBUTE).append(" ").append(Utils.quote(m_Name)).append(" ");
 		switch (m_Type) {
@@ -872,8 +871,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns a value of a nominal or string attribute. Returns an empty string
-	 * if the attribute is neither a string nor a nominal attribute.
+	 * Returns a value of a nominal or string attribute. Returns an empty string if
+	 * the attribute is neither a string nor a nominal attribute.
 	 * 
 	 * @param valIndex
 	 *            the value's index
@@ -910,8 +909,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns a value of a relation-valued attribute. Returns null if the
-	 * attribute is not relation-valued.
+	 * Returns a value of a relation-valued attribute. Returns null if the attribute
+	 * is not relation-valued.
 	 * 
 	 * @param valIndex
 	 *            the value's index
@@ -932,8 +931,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	 * 
 	 * @param value
 	 *            The string value to add
-	 * @return the index assigned to the string, or -1 if the attribute is not
-	 *         of type Attribute.STRING
+	 * @return the index assigned to the string, or -1 if the attribute is not of
+	 *         type Attribute.STRING
 	 */
 	/*
 	 * @ requires value != null; ensures isString() && 0 <= \result && \result <
@@ -965,8 +964,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Clear the map and list of values and set them to contain just the
-	 * supplied value
+	 * Clear the map and list of values and set them to contain just the supplied
+	 * value
 	 * 
 	 * @param value
 	 *            the current (and only) value of this String attribute. If null
@@ -993,13 +992,13 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	 *            The Attribute containing the string value to add.
 	 * @param index
 	 *            the index of the string value in the source attribute.
-	 * @return the index assigned to the string, or -1 if the attribute is not
-	 *         of type Attribute.STRING
+	 * @return the index assigned to the string, or -1 if the attribute is not of
+	 *         type Attribute.STRING
 	 */
 	/*
-	 * @ requires src != null; requires 0 <= index && index <
-	 * src.m_Values.size(); ensures isString() && 0 <= \result && \result <
-	 * m_Values.size() || ! isString() && \result == -1;
+	 * @ requires src != null; requires 0 <= index && index < src.m_Values.size();
+	 * ensures isString() && 0 <= \result && \result < m_Values.size() || !
+	 * isString() && \result == -1;
 	 */
 	public int addStringValue(Attribute src, int index) {
 
@@ -1086,8 +1085,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Removes a value of a nominal, string, or relation-valued attribute.
-	 * Creates a fresh list of attribute values before removing it.
+	 * Removes a value of a nominal, string, or relation-valued attribute. Creates a
+	 * fresh list of attribute values before removing it.
 	 * 
 	 * @param index
 	 *            the value's index
@@ -1162,8 +1161,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Sets a value of a nominal attribute or string attribute. Creates a fresh
-	 * list of attribute values before it is set.
+	 * Sets a value of a nominal attribute or string attribute. Creates a fresh list
+	 * of attribute values before it is set.
 	 * 
 	 * @param index
 	 *            the value's index
@@ -1229,8 +1228,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns the given amount of milliseconds formatted according to the
-	 * current Date format.
+	 * Returns the given amount of milliseconds formatted according to the current
+	 * Date format.
 	 * 
 	 * @param date
 	 *            the date, represented in milliseconds since January 1, 1970,
@@ -1248,8 +1247,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Parses the given String as Date, according to the current format and
-	 * returns the corresponding amount of milliseconds.
+	 * Parses the given String as Date, according to the current format and returns
+	 * the corresponding amount of milliseconds.
 	 * 
 	 * @param string
 	 *            the date to parse
@@ -1272,8 +1271,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns the properties supplied for this attribute. Returns null if there
-	 * is no meta data for this attribute.
+	 * Returns the properties supplied for this attribute. Returns null if there is
+	 * no meta data for this attribute.
 	 * 
 	 * @return metadata for this attribute
 	 */
@@ -1289,8 +1288,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	 * Returns the ordering of the attribute. One of the following:
 	 * 
 	 * ORDERING_SYMBOLIC - attribute values should be treated as symbols.
-	 * ORDERING_ORDERED - attribute values have a global ordering.
-	 * ORDERING_MODULO - attribute values have an ordering which wraps.
+	 * ORDERING_ORDERED - attribute values have a global ordering. ORDERING_MODULO -
+	 * attribute values have an ordering which wraps.
 	 * 
 	 * @return the ordering type of the attribute
 	 */
@@ -1329,8 +1328,7 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Returns whether the attribute has a zeropoint and may be added
-	 * meaningfully.
+	 * Returns whether the attribute has a zeropoint and may be added meaningfully.
 	 * 
 	 * @return whether the attribute has a zeropoint or not
 	 */
@@ -1353,8 +1351,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 	}
 
 	/**
-	 * Sets the new attribute's weight. Does not modify the weight info stored
-	 * in the attribute's meta data object!
+	 * Sets the new attribute's weight. Does not modify the weight info stored in
+	 * the attribute's meta data object!
 	 * 
 	 * @param value
 	 *            the new weight
@@ -1505,11 +1503,8 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 			my_nominal_values.add("first");
 			my_nominal_values.add("second");
 			my_nominal_values.add("third");
-			
-			String nominalValuesAsString = "";
-			for(String val : my_nominal_values) {
-				nominalValuesAsString = nominalValuesAsString + val;
-			}
+
+			String nominalValuesAsString = my_nominal_values.stream().collect(Collectors.joining());
 
 			// Create nominal attribute "position"
 			Attribute position = new Attribute("position", my_nominal_values);
@@ -1557,10 +1552,7 @@ public class Attribute implements Copyable, Serializable, RevisionHandler {
 			System.out.println(position);
 
 			List<String> values = new ArrayList<>();
-			my_nominal_values.stream().map(o -> o.toString())
-				.forEach((String oString) -> 
-				values.add(oString)
-			);
+			values.addAll(my_nominal_values.stream().map(o -> o).collect(Collectors.toList()));
 
 			// Checks type of attribute "position" using constants
 			switch (position.type()) {
