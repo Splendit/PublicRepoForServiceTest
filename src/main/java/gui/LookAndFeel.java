@@ -101,7 +101,7 @@ public class LookAndFeel {
 			UIManager.setLookAndFeel(classname);
 			result = true;
 
-			if (StringUtils.contains(System.getProperty("os.name").toLowerCase(), "mac os x")
+			if (StringUtils.contains(StringUtils.lowerCase(System.getProperty("os.name")), "mac os x")
 					&& !StringUtils.contains(classname, "com.apple.laf")) {
 				KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher((KeyEvent e) -> {
 					if (!e.isConsumed()) {
@@ -118,7 +118,7 @@ public class LookAndFeel {
 
 			// workaround for scrollbar handle disappearing bug in Nimbus LAF:
 			// https://bugs.openjdk.java.net/browse/JDK-8134828
-			if (StringUtils.contains(classname.toLowerCase(), "nimbus")) {
+			if (StringUtils.contains(StringUtils.lowerCase(classname), "nimbus")) {
 				javax.swing.LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
 				UIDefaults defaults = lookAndFeel.getDefaults();
 				defaults.put("ScrollBar.minimumThumbSize", new Dimension(30, 30));

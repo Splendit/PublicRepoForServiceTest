@@ -80,7 +80,7 @@ public class Tag implements Serializable, RevisionHandler {
 
 	public Tag(int ident, String identStr, String readable, boolean upperCase) {
 		m_ID = ident;
-		if (identStr.isEmpty()) {
+		if (StringUtils.isEmpty(identStr)) {
 			m_IDStr = Integer.toString(ident);
 		} else {
 			m_IDStr = identStr;

@@ -1032,7 +1032,7 @@ public final class Utils implements RevisionHandler {
 			str = StringUtils.substring(str, i);
 
 			// stop when str is empty
-			if (str.isEmpty()) {
+			if (StringUtils.isEmpty(str)) {
 				break;
 			}
 
@@ -2151,7 +2151,8 @@ public final class Utils implements RevisionHandler {
 			// Cygwin doesn't like upper case drives -> try lower case drive
 			try {
 				fileStr = absolute.getPath();
-				fileStr = StringUtils.lowerCase(fileStr.substring(0, 1)) + StringUtils.substring(fileStr, 1);
+				fileStr = StringUtils.lowerCase(StringUtils.substring(fileStr, 0, 1))
+						+ StringUtils.substring(fileStr, 1);
 				result = createRelativePath(new File(fileStr));
 			} catch (Exception e) {
 				// no luck with Cygwin workaround, convert it like it is

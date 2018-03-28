@@ -415,7 +415,7 @@ public class ClassDiscovery implements RevisionHandler {
 		// add directory to the list
 		if (prefix == null) {
 			newPrefix = "";
-		} else if (prefix.isEmpty()) {
+		} else if (StringUtils.isEmpty(prefix)) {
 			newPrefix = dir.getName();
 		} else {
 			newPrefix = prefix + "." + dir.getName();

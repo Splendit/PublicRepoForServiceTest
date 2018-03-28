@@ -107,8 +107,9 @@ public class Version implements Comparable<String>, RevisionHandler {
 
 		try {
 			String tmpStr = version;
-			if (StringUtils.endsWith(tmpStr.toLowerCase(), "-snapshot")) {
-				tmpStr = StringUtils.substring(tmpStr, 0, StringUtils.indexOf(tmpStr.toLowerCase(), "-snapshot"));
+			if (StringUtils.endsWith(StringUtils.lowerCase(tmpStr), "-snapshot")) {
+				tmpStr = StringUtils.substring(tmpStr, 0,
+						StringUtils.indexOf(StringUtils.lowerCase(tmpStr), "-snapshot"));
 				isSnapshot = true;
 			}
 			tmpStr = tmpStr.replace('-', '.');

@@ -471,12 +471,12 @@ public abstract class AbstractFileSaver extends AbstractSaver
 				setDir(System.getProperty("user.dir"));
 			}
 			if ("".equals(mPrefix)) {
-				if (relationName.isEmpty()) {
+				if (StringUtils.isEmpty(relationName)) {
 					throw new IOException("[Saver] Empty filename!!");
 				}
 				String concat = mDir + File.separator + relationName + add + fileExtension;
-				if (!StringUtils.endsWith(concat.toLowerCase(), fileExtension)
-						&& !StringUtils.endsWith(concat.toLowerCase(), fileExtension + fileExtensionCompressed)) {
+				if (!StringUtils.endsWith(StringUtils.lowerCase(concat), fileExtension) && !StringUtils
+						.endsWith(StringUtils.lowerCase(concat), fileExtension + fileExtensionCompressed)) {
 					concat = concat + fileExtension;
 				}
 				setFile(new File(concat));
@@ -485,8 +485,8 @@ public abstract class AbstractFileSaver extends AbstractSaver
 					relationName = "_" + relationName;
 				}
 				String concat = (mDir + File.separator + mPrefix + relationName + add);
-				if (!StringUtils.endsWith(concat.toLowerCase(), fileExtension)
-						&& !StringUtils.endsWith(concat.toLowerCase(), fileExtension + fileExtensionCompressed)) {
+				if (!StringUtils.endsWith(StringUtils.lowerCase(concat), fileExtension) && !StringUtils
+						.endsWith(StringUtils.lowerCase(concat), fileExtension + fileExtensionCompressed)) {
 					concat = concat + fileExtension;
 				}
 				setFile(new File(concat));

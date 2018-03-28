@@ -462,7 +462,7 @@ public class Option implements RevisionHandler {
 								optionValues.add(optionValue);
 								while (true) {
 									optionValue = Utils.getOption(parameterDescription.commandLineParamName(), options);
-									if (optionValue.isEmpty()) {
+									if (StringUtils.isEmpty(optionValue)) {
 										break;
 									}
 									optionValues.add(optionValue);

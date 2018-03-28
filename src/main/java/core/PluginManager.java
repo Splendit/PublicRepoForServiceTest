@@ -398,7 +398,8 @@ public class PluginManager {
 			String groupID = StringUtils.trim(rParts[0]);
 			String resourceDesc = StringUtils.trim(rParts[1]);
 			String resourcePath = StringUtils.trim(rParts[2]);
-			if (groupID.isEmpty() || resourceDesc.isEmpty() || resourcePath.isEmpty()) {
+			if (StringUtils.isEmpty(groupID) || StringUtils.isEmpty(resourceDesc)
+					|| StringUtils.isEmpty(resourcePath)) {
 				System.err.println("[PluginManager] Empty part in resource spec: " + r);
 				continue;
 			}

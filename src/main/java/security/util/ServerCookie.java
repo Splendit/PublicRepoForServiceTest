@@ -149,7 +149,7 @@ public class ServerCookie {
 
 	public static int maybeQuote2(int version, StringBuffer buf, String value, String literals,
 			boolean allowVersionSwitch) {
-		if (value == null || value.isEmpty()) {
+		if (value == null || StringUtils.isEmpty(value)) {
 			buf.append("\"\"");
 		} else if (containsCTL(value, version)) {
 			throw new IllegalArgumentException(
@@ -195,7 +195,7 @@ public class ServerCookie {
 	}
 
 	public static boolean alreadyQuoted(String value) {
-		if (value == null || value.isEmpty()) {
+		if (value == null || StringUtils.isEmpty(value)) {
 			return false;
 		}
 		return (value.charAt(0) == '\"' && value.charAt(value.length() - 1) == '\"');
@@ -214,7 +214,7 @@ public class ServerCookie {
 	 */
 	private static String escapeDoubleQuotes(String s, int beginIndex, int endIndex) {
 
-		if (s == null || s.isEmpty() || StringUtils.indexOf(s, '"') == -1) {
+		if (s == null || StringUtils.isEmpty(s) || StringUtils.indexOf(s, '"') == -1) {
 			return s;
 		}
 

@@ -226,10 +226,10 @@ public class ClassCache implements RevisionHandler {
 
 		parts = cp.split(" ");
 		for (String part : parts) {
-			if (StringUtils.trim(part).isEmpty()) {
+			if (StringUtils.isEmpty(StringUtils.trim(part))) {
 				return;
 			}
-			if (StringUtils.endsWith(part.toLowerCase(), ".jar")) {
+			if (StringUtils.endsWith(StringUtils.lowerCase(part), ".jar")) {
 				initFromClasspathPart(part);
 			}
 		}

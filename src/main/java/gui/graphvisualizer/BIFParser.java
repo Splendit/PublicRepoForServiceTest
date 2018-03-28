@@ -150,8 +150,10 @@ public class BIFParser implements GraphConstants {
 					// " y: "+
 					// xy.substring(xy.indexOf(',')+1, xy.indexOf(')'))
 					// );
-					n.x = Integer.parseInt(StringUtils.trim(xy.substring(xy.indexOf('(') + 1, xy.indexOf(','))));
-					n.y = Integer.parseInt(StringUtils.trim(xy.substring(xy.indexOf(',') + 1, xy.indexOf(')'))));
+					n.x = Integer.parseInt(StringUtils.trim(
+							StringUtils.substring(xy, StringUtils.indexOf(xy, '(') + 1, StringUtils.indexOf(xy, ','))));
+					n.y = Integer.parseInt(StringUtils.trim(
+							StringUtils.substring(xy, StringUtils.indexOf(xy, ',') + 1, StringUtils.indexOf(xy, ')'))));
 					break;
 				}
 			}

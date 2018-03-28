@@ -321,12 +321,12 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 
 		index = filename.lastIndexOf('.');
 		if (index > -1) {
-			extension = StringUtils.lowerCase(filename.substring(index));
+			extension = StringUtils.lowerCase(StringUtils.substring(filename, index));
 			result = getConverterForExtension(extension, ht);
 			// is it a compressed format?
 			if (".gz".equals(extension) && result == null) {
 				index = filename.lastIndexOf('.', index - 1);
-				extension = StringUtils.lowerCase(filename.substring(index));
+				extension = StringUtils.lowerCase(StringUtils.substring(filename, index));
 				result = getConverterForExtension(extension, ht);
 			}
 		}
@@ -710,8 +710,8 @@ public class ConverterUtils implements Serializable, RevisionHandler {
 		 * @return true if the location seems to be of ARFF format
 		 */
 		public static boolean isArff(String location) {
-			if (StringUtils.endsWith(location.toLowerCase(), StringUtils.lowerCase(ArffLoader.FILE_EXTENSION))
-					|| StringUtils.endsWith(location.toLowerCase(),
+			if (StringUtils.endsWith(StringUtils.lowerCase(location), StringUtils.lowerCase(ArffLoader.FILE_EXTENSION))
+					|| StringUtils.endsWith(StringUtils.lowerCase(location),
 							StringUtils.lowerCase(ArffLoader.FILE_EXTENSION_COMPRESSED))) {
 				return true;
 			} else {
