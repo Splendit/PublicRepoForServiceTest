@@ -66,7 +66,9 @@ public class ChartMouseEvent extends EventObject {
 	private static final long serialVersionUID = -682393837314562149L;
 
 	/** The chart that the mouse event relates to. */
-	private JFreeChart chart;
+	private JFreeChart 
+	
+	chart;
 
 	/** The Java mouse event that triggered this event. */
 	private MouseEvent trigger;
@@ -89,6 +91,9 @@ public class ChartMouseEvent extends EventObject {
 	public ChartMouseEvent(JFreeChart chart, MouseEvent trigger, ChartEntity entity) {
 		super(chart);
 		this.chart = chart;
+		
+		
+		
 		this.trigger = trigger;
 		this.entity = entity;
 	}
@@ -99,6 +104,9 @@ public class ChartMouseEvent extends EventObject {
 	 * @return The chart (never <code>null</code>).
 	 */
 	public JFreeChart getChart() {
+		
+		
+		
 		return this.chart;
 	}
 
